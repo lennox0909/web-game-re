@@ -226,7 +226,7 @@ python -m http.server 8080
 
 1. 使用 VS Code 開啟 `local_game_649` 資料夾。
 2. 在左側擴充套件市集搜尋並安裝 **Live Server**。
-3. 對著 `index.html` 按滑鼠右鍵，選擇 **`Open with Live Server`**，瀏覽器就會自動開啟 `[http://127.0.0.1:5500/index.html](http://127.0.0.1:5500/index.html)` 並正常載入遊戲。
+3. 對著 `index.html` 按滑鼠右鍵，選擇 **`Open with Live Server`**，瀏覽器就會自動開啟 [http://127.0.0.1:5500/index.html](http://127.0.0.1:5500/index.html) 並正常載入遊戲。
 
 ### 方法 3：使用 Node.js `npx serve`
 
