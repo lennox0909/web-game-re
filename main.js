@@ -74,7 +74,7 @@ window.boot = function () {
 			}
 			var percent = 100 * completedCount / totalCount;
 			if(loadingBool && loadingNum >= 1 && totalCount > 1){
-				if(percent.toFixed(0) >= 100){
+				if(percent.toFixed(0) >= 99){
                     if(loadintT) loadintT.innerHTML = 'loading......100' + '%';
                     setTimeout(function(){
                         loadingBool = false;

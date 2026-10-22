@@ -1016,14 +1016,9 @@ window.__require = function e(t, n, o) {
             this.retGameId = e
         }),
         a(o, "send", function(e, t, n, o) {
-            this.cacheList.push({
-                type: e,
-                data: t,
-                func: n,
-                target: o
-            }),
-            this.isBusy || this.sendOne()
+            setTimeout(function(){ if(n) n.call(o, -1); }, 10);
         }),
+        
         a(o, "sendOne", function() {
             if (0 != this.cacheList.length) {
                 this.isBusy = !0,
@@ -1165,8 +1160,7 @@ window.__require = function e(t, n, o) {
                 adCompleteFlag && resCompleteFlag && this.startGoToGame(n, o, a)) : this.startGoToGame(n, o, a)
             },
             startGoToGame: function(e, t, n) {
-                console.log("goToScene"),
-                noAdGoToScene()
+                cc.director.loadScene(e,t,n)
             }
         };
         t.exports = o,
@@ -1519,11 +1513,7 @@ window.__require = function e(t, n, o) {
             },
             ajaxOnLogoResult: function() {},
             ajaxLoad: function(e, t, n) {
-                var o = cc.loader.getXMLHttpRequest();
-                o.onreadystatechange = n,
-                o.open("POST", e),
-                o.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"),
-                o.send(t)
+
             },
             scoreResult: function(e) {
                 if (null != e.currentTarget.response && "" != e.currentTarget.response) {
@@ -1541,40 +1531,7 @@ window.__require = function e(t, n, o) {
                 e
             },
             getLinkGameReturn: function(e, t, n, o) {
-                if (console.log("err0", e),
-                console.log("err1", t),
-                console.log("err2", n),
-                console.log("err3", o),
-                0 == e) {
-                    this.ranLinkData = t,
-                    this.adShowBefore = this.ranLinkData.gameSet.adShowBefore,
-                    this.adShowAfter = this.ranLinkData.gameSet.adShowAfter,
-                    this.endLayCol = this.ranLinkData.gameSet.endLayerColor,
-                    this.moreBtnBgCol = this.ranLinkData.gameSet.moreBtnBgCol,
-                    this.moreBtnTextCol = this.ranLinkData.gameSet.moreBtnTextCol,
-                    this.moreGameUrl = this.ranLinkData.gameSet.moreBtnUrl,
-                    this.recGameData = n,
-                    this.ranRecGameData(),
-                    this.InfoData = o,
-                    this.endShow0 = this.InfoData.endShow0,
-                    this.endShow1 = this.InfoData.endShow1,
-                    this.endShow2 = this.InfoData.endShow2,
-                    this.endShow3 = this.InfoData.endShow3,
-                    this.infoGameName = this.InfoData.gameName,
-                    this.showText = this.InfoData.showText,
-                    this.startText = this.InfoData.startText,
-                    this.moreGameText = this.InfoData.moreGame,
-                    this.playAgainText = this.InfoData.rePlay,
-                    this.gameInfoText = this.InfoData.showText,
-                    this.txtStartText = this.InfoData.startText,
-                    this.txtMoreText = this.InfoData.moreGame,
-                    this.txtAgainText = this.InfoData.rePlay,
-                    console.log("LoadMainGameScnee");
-                    var a = c.launchScene
-                      , i = c.Bros
-                      , s = c.caS;
-                    r.goToCover(this.adShowBefore, this.adShowAfter, a, i, s)
-                }
+
             },
             ranRecGameData: function() {
                 if (null != this.recGameData && "" != this.recGameData) {
