@@ -1,0 +1,1965 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>順序停車 Order Parking - 益智交通調度遊戲</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: radial-gradient(circle at 50% 20%, #1e293b 0%, #0f172a 100%);
+      color: #f8fafc;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+      cursor: pointer;
+    }
+    .glass-panel {
+      background: rgba(30, 41, 59, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+    .btn-game {
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-game:hover {
+      transform: translateY(-1px);
+    }
+    .btn-game:active {
+      transform: translateY(1px) scale(0.97);
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .animate-pop {
+      animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-between p-2 sm:p-4">
+
+  <!-- 頂部導覽與狀態列 -->
+  <header class="w-full max-w-4xl glass-panel rounded-2xl p-3 sm:px-5 sm:py-3.5 shadow-2xl mb-2 sm:mb-3 flex flex-wrap items-center justify-between gap-2 z-10">
+    <!-- 品牌與標題 -->
+    <div class="flex items-center gap-2.5">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/25 text-slate-950 font-black text-xl">
+        P
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="text-base sm:text-lg font-black tracking-tight text-white">順序停車</h1>
+          <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30">Order Parking</span>
+        </div>
+        <p id="levelSubtitle" class="text-xs text-slate-300 font-medium">第 1 關：新手教學（先後順序）</p>
+      </div>
+    </div>
+
+    <!-- 關卡切換器 -->
+    <div class="flex items-center gap-1 bg-slate-900/80 p-1 rounded-xl border border-slate-700/70" id="levelSelector">
+      <!-- 由 JS 動態生成 1~5 關按鈕 -->
+    </div>
+
+    <!-- 進度與操作按鈕群 -->
+    <div class="flex items-center gap-2 ml-auto sm:ml-0">
+      <!-- 停妥進度 -->
+      <div class="bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-1.5 flex items-center gap-2">
+        <span class="text-xs text-slate-400 font-medium">已停妥</span>
+        <span id="parkedProgress" class="text-sm sm:text-base font-black text-emerald-400">0 / 2</span>
+      </div>
+
+      <!-- 提示按鈕 -->
+      <button id="btnHint" class="btn-game px-3 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-bold text-xs sm:text-sm shadow-lg shadow-amber-500/20 flex items-center gap-1.5" title="提示下一步 (H)">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+        </svg>
+        <span>提示</span>
+      </button>
+
+      <!-- 重置按鈕 -->
+      <button id="btnReset" class="btn-game px-3 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs sm:text-sm border border-slate-600 flex items-center gap-1.5" title="重置本關 (R)">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+        </svg>
+        <span>重置</span>
+      </button>
+
+      <!-- 音效開關 -->
+      <button id="btnSound" class="btn-game p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700" title="音效開關 (M)">
+        <svg id="iconSoundOn" class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+        </svg>
+        <svg id="iconSoundOff" class="w-4 h-4 text-rose-400 hidden" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- 遊戲畫布主容器 -->
+  <main class="w-full max-w-4xl flex-1 flex flex-col items-center justify-center relative">
+    <!-- 即時提示橫幅 -->
+    <div id="statusBanner" class="w-full mb-2 px-4 py-2 rounded-xl bg-slate-800/90 border border-slate-700/80 text-xs sm:text-sm text-slate-200 flex items-center justify-between gap-2 shadow-md">
+      <div class="flex items-center gap-2">
+        <span id="statusBadge" class="px-2 py-0.5 rounded-md bg-sky-500/20 text-sky-300 font-bold text-xs border border-sky-400/30">操作指南</span>
+        <span id="statusText">點擊下方等待區的車輛即可依序發車，移至車輛上方可預覽行駛路線！</span>
+      </div>
+      <span class="hidden sm:inline text-[11px] text-slate-400 shrink-0">快捷鍵：數字鍵 1~6 發車｜H 提示｜R 重置</span>
+    </div>
+
+    <!-- 畫布外框 (維持 4:3 比例) -->
+    <div id="canvasWrapper" class="w-full aspect-[4/3] max-h-[72vh] rounded-2xl overflow-hidden shadow-2xl border-2 border-slate-700/80 relative bg-slate-900">
+      <canvas id="gameCanvas"></canvas>
+
+      <!-- 發生碰撞覆蓋提示卡 -->
+      <div id="crashOverlay" class="hidden absolute inset-x-0 bottom-4 flex justify-center px-4 pointer-events-none z-20">
+        <div class="animate-pop pointer-events-auto glass-panel bg-rose-950/90 border-rose-500/50 rounded-2xl px-5 py-3.5 shadow-2xl flex flex-col sm:flex-row items-center gap-3 sm:gap-5 max-w-xl w-full justify-between">
+          <div class="flex items-center gap-3 text-center sm:text-left">
+            <div class="w-10 h-10 rounded-full bg-rose-500/20 border border-rose-400/40 flex items-center justify-center text-rose-300 text-xl shrink-0">
+              💥
+            </div>
+            <div>
+              <h3 id="crashTitle" class="text-sm sm:text-base font-black text-rose-200">發生擦撞！請注意發車順序與時機</h3>
+              <p id="crashReason" class="text-xs text-rose-300/90 mt-0.5">前方仍有阻擋車輛，或內側車位尚未停入。</p>
+            </div>
+          </div>
+          <button id="btnCrashRetry" class="btn-game px-4 py-2 rounded-xl bg-rose-500 hover:bg-rose-400 text-white font-bold text-xs sm:text-sm shrink-0 shadow-lg shadow-rose-600/30">
+            重新嘗試本關
+          </button>
+        </div>
+      </div>
+
+      <!-- 過關結算彈窗 -->
+      <div id="winModal" class="hidden absolute inset-0 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4 z-30">
+        <div class="animate-pop glass-panel rounded-3xl p-6 sm:p-8 max-w-md w-full text-center border border-emerald-400/30 shadow-2xl">
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 text-slate-950 text-3xl font-black shadow-xl shadow-emerald-500/30 mb-3">
+            🏆
+          </div>
+          <h2 id="winTitle" class="text-2xl font-black text-white">完美入庫！</h2>
+          <p id="winDesc" class="text-sm text-slate-300 mt-1">所有車輛皆按照正確順序安全停入車位</p>
+
+          <!-- 星級評價 -->
+          <div id="winStars" class="flex items-center justify-center gap-2 my-4 text-3xl">
+            <span>⭐</span><span>⭐</span><span>⭐</span>
+          </div>
+
+          <div class="bg-slate-900/80 rounded-2xl p-3 mb-5 border border-slate-800 flex justify-around text-xs">
+            <div>
+              <div class="text-slate-400">完成關卡</div>
+              <div id="winStatLevel" class="text-base font-black text-white mt-0.5">Level 1</div>
+            </div>
+            <div class="border-l border-slate-800"></div>
+            <div>
+              <div class="text-slate-400">本關嘗試次數</div>
+              <div id="winStatAttempts" class="text-base font-black text-amber-400 mt-0.5">1 次</div>
+            </div>
+            <div class="border-l border-slate-800"></div>
+            <div>
+              <div class="text-slate-400">使用提示</div>
+              <div id="winStatHints" class="text-base font-black text-sky-400 mt-0.5">0 次</div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-center gap-3">
+            <button id="btnModalReplay" class="btn-game flex-1 py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-sm border border-slate-700">
+              再玩一次
+            </button>
+            <button id="btnModalNext" class="btn-game flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-500 text-slate-950 font-black text-sm shadow-lg shadow-emerald-500/25">
+              下一關 →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 底部操作說明與圖例 -->
+  <footer class="w-full max-w-4xl mt-2 sm:mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 px-1">
+    <div class="flex flex-wrap items-center gap-4">
+      <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span> 起點阻擋：後車需等前車先駛離</span>
+      <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span> 內外車位：先讓停在深處內側的車入庫</span>
+      <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-sky-400 inline-block"></span> 路口交會：觀察路徑預覽避免同時相撞</span>
+    </div>
+    <div class="text-slate-500">HTML5 Canvas 2D 頂視角順序停車原型</div>
+  </footer>
+
+  <script>
+    // ============================================================================
+    // 1. Web Audio API 音效合成器 (無須外部音檔，純程式碼合成引擎、喇叭、入庫、碰撞與過關音效)
+    // ============================================================================
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) {
+            this.ctx = new AudioCtx();
+          }
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      // 發車引擎與短促喇叭聲
+      playLaunch() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        // 雙音短喇叭
+        const osc1 = this.ctx.createOscillator();
+        const osc2 = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc1.type = 'triangle';
+        osc2.type = 'sawtooth';
+        osc1.frequency.setValueAtTime(440, now);
+        osc1.frequency.exponentialRampToValueAtTime(520, now + 0.12);
+        osc2.frequency.setValueAtTime(554.37, now);
+        osc2.frequency.exponentialRampToValueAtTime(659.25, now + 0.12);
+
+        gain.gain.setValueAtTime(0.11, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 0.16);
+        osc2.stop(now + 0.16);
+      }
+
+      // 安全停入車位提示音
+      playParked() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        const notes = [523.25, 659.25, 783.99]; // C5, E5, G5
+        notes.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.06);
+          gain.gain.setValueAtTime(0.14, now + idx * 0.06);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.06 + 0.22);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.06);
+          osc.stop(now + idx * 0.06 + 0.22);
+        });
+      }
+
+      // 碰撞擦撞聲 + 急促喇叭
+      playCrash() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        // 白噪音衝擊聲
+        const bufferSize = this.ctx.sampleRate * 0.28;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (this.ctx.sampleRate * 0.08));
+        }
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(950, now);
+
+        const noiseGain = this.ctx.createGain();
+        noiseGain.gain.setValueAtTime(0.32, now);
+        noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.28);
+
+        noise.connect(filter);
+        filter.connect(noiseGain);
+        noiseGain.connect(this.ctx.destination);
+        noise.start(now);
+
+        // 不諧和警示喇叭
+        const horn1 = this.ctx.createOscillator();
+        const horn2 = this.ctx.createOscillator();
+        const hornGain = this.ctx.createGain();
+        horn1.type = 'sawtooth';
+        horn2.type = 'sawtooth';
+        horn1.frequency.setValueAtTime(311.13, now + 0.05); // D#4
+        horn2.frequency.setValueAtTime(370.0, now + 0.05);  // F#4
+        hornGain.gain.setValueAtTime(0.12, now + 0.05);
+        hornGain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+
+        horn1.connect(hornGain);
+        horn2.connect(hornGain);
+        hornGain.connect(this.ctx.destination);
+        horn1.start(now + 0.05);
+        horn2.start(now + 0.05);
+        horn1.stop(now + 0.42);
+        horn2.stop(now + 0.42);
+      }
+
+      // 提示音效
+      playHint() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, now);
+        osc.frequency.setValueAtTime(880, now + 0.08);
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.26);
+      }
+
+      // 過關勝利旋律
+      playWin() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        const melody = [
+          { f: 523.25, t: 0.0, d: 0.12 },
+          { f: 659.25, t: 0.11, d: 0.12 },
+          { f: 783.99, t: 0.22, d: 0.12 },
+          { f: 1046.50, t: 0.34, d: 0.35 }
+        ];
+        melody.forEach(n => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(n.f, now + n.t);
+          gain.gain.setValueAtTime(0.18, now + n.t);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + n.t + n.d);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + n.t);
+          osc.stop(now + n.t + n.d);
+        });
+      }
+    }
+
+    const sound = new SoundEngine();
+
+    // ============================================================================
+    // 2. 車輛配色主題字典
+    // ============================================================================
+    const CAR_THEMES = {
+      red: {
+        name: '紅車',
+        body: '#ef4444',
+        bodyDark: '#b91c1c',
+        roof: '#fca5a5',
+        accent: '#fee2e2',
+        pathColor: '#f87171',
+        slotBg: 'rgba(239, 68, 68, 0.16)'
+      },
+      blue: {
+        name: '藍車',
+        body: '#3b82f6',
+        bodyDark: '#1d4ed8',
+        roof: '#93c5fd',
+        accent: '#dbeafe',
+        pathColor: '#60a5fa',
+        slotBg: 'rgba(59, 130, 246, 0.16)'
+      },
+      green: {
+        name: '綠車',
+        body: '#10b981',
+        bodyDark: '#047857',
+        roof: '#6ee7b7',
+        accent: '#d1fae5',
+        pathColor: '#34d399',
+        slotBg: 'rgba(16, 185, 129, 0.16)'
+      },
+      yellow: {
+        name: '黃車',
+        body: '#f59e0b',
+        bodyDark: '#b45309',
+        roof: '#fde68a',
+        accent: '#fef3c7',
+        pathColor: '#fbbf24',
+        slotBg: 'rgba(245, 158, 11, 0.16)'
+      },
+      purple: {
+        name: '紫車',
+        body: '#a855f7',
+        bodyDark: '#6b21a8',
+        roof: '#d8b4fe',
+        accent: '#f3e8ff',
+        pathColor: '#c084fc',
+        slotBg: 'rgba(168, 85, 247, 0.16)'
+      },
+      cyan: {
+        name: '青車',
+        body: '#06b6d4',
+        bodyDark: '#0e7490',
+        roof: '#67e8f9',
+        accent: '#cffafe',
+        pathColor: '#22d3ee',
+        slotBg: 'rgba(6, 182, 212, 0.16)'
+      },
+      orange: {
+        name: '橘車',
+        body: '#f97316',
+        bodyDark: '#c2410c',
+        roof: '#fdba74',
+        accent: '#ffedd5',
+        pathColor: '#fb923c',
+        slotBg: 'rgba(249, 115, 22, 0.16)'
+      },
+      pink: {
+        name: '粉車',
+        body: '#ec4899',
+        bodyDark: '#be185d',
+        roof: '#f9a8d4',
+        accent: '#fce7f3',
+        pathColor: '#f472b6',
+        slotBg: 'rgba(236, 72, 153, 0.16)'
+      }
+    };
+
+    // ============================================================================
+    // 3. 精心設計的 5 個關卡配置 (800 x 600 邏輯座標系)
+    // ============================================================================
+    // 幾何設計規範：
+    // - 車輛視覺長度 58px、寬度 32px；碰撞箱半長 26.5px、半寬 14px
+    // - 橫向主幹道中心 y = 280
+    // - 上方雙層停車區：內側車位 y = 100、外側車位 y = 185 (與 y=280 主幹道保持 66px 淨空，絕不誤撞)
+    // - 下方雙層出發區：前車 y = 395、後車 y = 490 (與 y=280 主幹道保持 86px 淨空)
+    const LEVELS = [
+      // --------------------------------------------------------------------------
+      // 第 1 關：新手教學（2 台車）
+      // 順序：1 -> 2 (1號紅車擋在2號藍車前方，先點1號再點2號)
+      // --------------------------------------------------------------------------
+      {
+        id: 1,
+        title: '第 1 關：新手教學（前後出庫順序）',
+        hintSummary: '2號藍車被前方的1號紅車擋住了！請先點擊「1號紅車」出發，再點擊「2號藍車」。',
+        solutionOrder: [1, 2],
+        roads: [
+          { x: 200, y: 240, w: 420, h: 80 }, // 橫向主幹道 y=280
+          { x: 200, y: 240, w: 80, h: 310 }, // 左側出發車道 x=240
+          { x: 380, y: 100, w: 80, h: 160 }, // P1 停車支線 x=420
+          { x: 520, y: 100, w: 80, h: 160 }  // P2 停車支線 x=560
+        ],
+        crosswalks: [
+          { x: 205, y: 332, w: 70, h: 18, dir: 'h' }
+        ],
+        cars: [
+          {
+            id: 1,
+            theme: 'red',
+            waypoints: [
+              { x: 240, y: 395 },
+              { x: 240, y: 280 },
+              { x: 420, y: 280 },
+              { x: 420, y: 150 }
+            ]
+          },
+          {
+            id: 2,
+            theme: 'blue',
+            waypoints: [
+              { x: 240, y: 490 },
+              { x: 240, y: 280 },
+              { x: 560, y: 280 },
+              { x: 560, y: 150 }
+            ]
+          }
+        ]
+      },
+
+      // --------------------------------------------------------------------------
+      // 第 2 關：內外車位與阻擋（3 台車）
+      // 順序：2 -> 1 -> 3
+      // 邏輯：
+      // - 2號綠車擋住1號黃車的起點 -> 2號必須比1號先走
+      // - 1號黃車停在右側深處內位 (540, 100)，路徑經過3號紫車的外側目標車位 (540, 185) -> 1號必須比3號先停入！
+      // --------------------------------------------------------------------------
+      {
+        id: 2,
+        title: '第 2 關：內外車位（深處車位優先入庫）',
+        hintSummary: '1號黃車要停入右側最深處的 P1 車位，會經過 P3 車位！因此正確順序為：2號綠車 → 1號黃車 → 3號紫車。',
+        solutionOrder: [2, 1, 3],
+        roads: [
+          { x: 220, y: 240, w: 360, h: 80 }, // 橫向幹道 y=280
+          { x: 220, y: 100, w: 80, h: 450 }, // 左側貫通車道 x=260
+          { x: 500, y: 60, w: 80, h: 390 }   // 右側貫通車道 x=540
+        ],
+        crosswalks: [
+          { x: 225, y: 332, w: 70, h: 18, dir: 'h' },
+          { x: 505, y: 332, w: 70, h: 18, dir: 'h' }
+        ],
+        cars: [
+          {
+            id: 2,
+            theme: 'green',
+            waypoints: [
+              { x: 260, y: 395 },
+              { x: 260, y: 150 }
+            ]
+          },
+          {
+            id: 1,
+            theme: 'yellow',
+            waypoints: [
+              { x: 260, y: 490 },
+              { x: 260, y: 280 },
+              { x: 540, y: 280 },
+              { x: 540, y: 100 }
+            ]
+          },
+          {
+            id: 3,
+            theme: 'purple',
+            waypoints: [
+              { x: 540, y: 395 },
+              { x: 540, y: 185 }
+            ]
+          }
+        ]
+      },
+
+      // --------------------------------------------------------------------------
+      // 第 3 關：連鎖阻擋（4 台車）
+      // 順序：3 -> 1 -> 4 -> 2
+      // 邏輯：
+      // - 3號青車擋住1號紅車，且開往右上深處內位 P3 (540, 100)
+      // - 1號紅車解鎖後開往左上深處內位 P1 (260, 100)
+      // - 4號橘車需等1號紅車停妥後，才能停入左上外側位 P4 (260, 185)，並解鎖後方的2號藍車
+      // - 2號藍車最後停入右上外側位 P2 (540, 185)
+      // --------------------------------------------------------------------------
+      {
+        id: 3,
+        title: '第 3 關：連鎖阻擋（雙向內外車位推演）',
+        hintSummary: '先讓內側車位車輛入庫！順序：3號青車（停右內）→ 1號紅車（停左內）→ 4號橘車（停左外）→ 2號藍車（停右外）。',
+        solutionOrder: [3, 1, 4, 2],
+        roads: [
+          { x: 220, y: 240, w: 360, h: 80 }, // 中央橫向幹道 y=280
+          { x: 220, y: 60, w: 80, h: 490 },  // 左側車道 x=260
+          { x: 500, y: 60, w: 80, h: 490 }   // 右側車道 x=540
+        ],
+        crosswalks: [
+          { x: 225, y: 332, w: 70, h: 18, dir: 'h' },
+          { x: 505, y: 332, w: 70, h: 18, dir: 'h' },
+          { x: 390, y: 245, w: 18, h: 70, dir: 'v' }
+        ],
+        cars: [
+          {
+            id: 3,
+            theme: 'cyan',
+            waypoints: [
+              { x: 260, y: 395 },
+              { x: 260, y: 280 },
+              { x: 540, y: 280 },
+              { x: 540, y: 100 }
+            ]
+          },
+          {
+            id: 1,
+            theme: 'red',
+            waypoints: [
+              { x: 260, y: 490 },
+              { x: 260, y: 100 }
+            ]
+          },
+          {
+            id: 4,
+            theme: 'orange',
+            waypoints: [
+              { x: 540, y: 395 },
+              { x: 540, y: 280 },
+              { x: 260, y: 280 },
+              { x: 260, y: 185 }
+            ]
+          },
+          {
+            id: 2,
+            theme: 'blue',
+            waypoints: [
+              { x: 540, y: 490 },
+              { x: 540, y: 185 }
+            ]
+          }
+        ]
+      },
+
+      // --------------------------------------------------------------------------
+      // 第 4 關：十字路口與時機（5 台車）
+      // 順序：2 -> 5 -> 1 -> 3 -> 4
+      // 邏輯：
+      // - 左側橫向出發道：2號綠車(前) 擋住 5號粉車(後)
+      // - 2號綠車停左上內位 (240, 100)
+      // - 5號粉車停中上內位 (410, 100)
+      // - 1號紅車從中下出發，停左上外位 (240, 185)，必須等 2號停入內位 且 5號通過路口
+      // - 3號黃車擋住4號紫車，停中上外位 (410, 185)，必須等 5號停入中上內位
+      // - 4號紫車最後停入右側車位 (660, 280)
+      // --------------------------------------------------------------------------
+      {
+        id: 4,
+        title: '第 4 關：十字路口與時機（5 車匯流調度）',
+        hintSummary: '先清空左側橫向車道並填滿深處車位！順序：2號綠車 → 5號粉車 → 1號紅車 → 3號黃車 → 4號紫車（注意路口車距）。',
+        solutionOrder: [2, 5, 1, 3, 4],
+        roads: [
+          { x: 25, y: 240, w: 695, h: 80 },  // 橫向貫通大道 y=280
+          { x: 200, y: 60, w: 80, h: 220 },  // 左上雙層車位 x=240
+          { x: 370, y: 60, w: 80, h: 220 },  // 中上雙層車位 x=410
+          { x: 290, y: 280, w: 80, h: 200 }, // 中下出發車道 x=330
+          { x: 460, y: 280, w: 80, h: 270 }  // 右下雙車出發車道 x=500
+        ],
+        crosswalks: [
+          { x: 182, y: 245, w: 18, h: 70, dir: 'v' },
+          { x: 295, y: 332, w: 70, h: 18, dir: 'h' },
+          { x: 465, y: 332, w: 70, h: 18, dir: 'h' }
+        ],
+        cars: [
+          {
+            id: 2,
+            theme: 'green',
+            waypoints: [
+              { x: 150, y: 280 },
+              { x: 240, y: 280 },
+              { x: 240, y: 100 }
+            ]
+          },
+          {
+            id: 5,
+            theme: 'pink',
+            waypoints: [
+              { x: 60, y: 280 },
+              { x: 410, y: 280 },
+              { x: 410, y: 100 }
+            ]
+          },
+          {
+            id: 1,
+            theme: 'red',
+            waypoints: [
+              { x: 330, y: 410 },
+              { x: 330, y: 280 },
+              { x: 240, y: 280 },
+              { x: 240, y: 185 }
+            ]
+          },
+          {
+            id: 3,
+            theme: 'yellow',
+            waypoints: [
+              { x: 500, y: 395 },
+              { x: 500, y: 280 },
+              { x: 410, y: 280 },
+              { x: 410, y: 185 }
+            ]
+          },
+          {
+            id: 4,
+            theme: 'purple',
+            waypoints: [
+              { x: 500, y: 490 },
+              { x: 500, y: 280 },
+              { x: 665, y: 280 }
+            ]
+          }
+        ]
+      },
+
+      // --------------------------------------------------------------------------
+      // 第 5 關：大師挑戰（6 台車立體樞紐調度）
+      // 唯一完美解鎖鏈：4 -> 1 -> 6 -> 2 -> 5 -> 3
+      // 邏輯：
+      // - 場上共有 3 組上方雙層車位 (x=220, 400, 580) 與 3 組下方雙車道 (x=220, 400, 580)
+      // - 前排三台車 (#5, #4, #6) 當中，只有「4號橘車」是前往深處內位 (580, 100)！
+      // - Step 1: 4號橘車出發停入右內位，解鎖後方的 1號紅車
+      // - Step 2: 1號紅車出發停入左內位 (220, 100)
+      // - Step 3: 左內位停滿後，6號青車即可安全停入左外位 (220, 185)，並解鎖後方的 2號藍車
+      // - Step 4: 2號藍車出發停入中內位 (400, 100)
+      // - Step 5: 中內位停滿後，5號粉車即可安全停入中外位 (400, 185)，並解鎖後方的 3號黃車
+      // - Step 6: 3號黃車最後出發停入右外位 (580, 185)，全數完美入庫！
+      // --------------------------------------------------------------------------
+      {
+        id: 5,
+        title: '第 5 關：大師挑戰（6 車連鎖樞紐解謎）',
+        hintSummary: '前排只有 4號橘車 的目標在深處內位！唯一完美順序：4號橘 → 1號紅 → 6號青 → 2號藍 → 5號粉 → 3號黃。',
+        solutionOrder: [4, 1, 6, 2, 5, 3],
+        roads: [
+          { x: 180, y: 240, w: 440, h: 80 }, // 中央幹道 y=280
+          { x: 180, y: 60, w: 80, h: 490 },  // 左側軸線 x=220
+          { x: 360, y: 60, w: 80, h: 490 },  // 中央軸線 x=400
+          { x: 540, y: 60, w: 80, h: 490 }   // 右側軸線 x=580
+        ],
+        crosswalks: [
+          { x: 185, y: 332, w: 70, h: 18, dir: 'h' },
+          { x: 365, y: 332, w: 70, h: 18, dir: 'h' },
+          { x: 545, y: 332, w: 70, h: 18, dir: 'h' },
+          { x: 300, y: 245, w: 18, h: 70, dir: 'v' },
+          { x: 480, y: 245, w: 18, h: 70, dir: 'v' }
+        ],
+        cars: [
+          {
+            id: 4,
+            theme: 'orange',
+            waypoints: [
+              { x: 400, y: 395 },
+              { x: 400, y: 280 },
+              { x: 580, y: 280 },
+              { x: 580, y: 100 }
+            ]
+          },
+          {
+            id: 1,
+            theme: 'red',
+            waypoints: [
+              { x: 400, y: 490 },
+              { x: 400, y: 280 },
+              { x: 220, y: 280 },
+              { x: 220, y: 100 }
+            ]
+          },
+          {
+            id: 6,
+            theme: 'cyan',
+            waypoints: [
+              { x: 580, y: 395 },
+              { x: 580, y: 280 },
+              { x: 220, y: 280 },
+              { x: 220, y: 185 }
+            ]
+          },
+          {
+            id: 2,
+            theme: 'blue',
+            waypoints: [
+              { x: 580, y: 490 },
+              { x: 580, y: 280 },
+              { x: 400, y: 280 },
+              { x: 400, y: 100 }
+            ]
+          },
+          {
+            id: 5,
+            theme: 'pink',
+            waypoints: [
+              { x: 220, y: 395 },
+              { x: 220, y: 280 },
+              { x: 400, y: 280 },
+              { x: 400, y: 185 }
+            ]
+          },
+          {
+            id: 3,
+            theme: 'yellow',
+            waypoints: [
+              { x: 220, y: 490 },
+              { x: 220, y: 280 },
+              { x: 580, y: 280 },
+              { x: 580, y: 185 }
+            ]
+          }
+        ]
+      }
+    ];
+
+    // ============================================================================
+    // 4. 路徑平滑化與幾何數學工具
+    // ============================================================================
+    const LOGICAL_WIDTH = 800;
+    const LOGICAL_HEIGHT = 600;
+    const CAR_LENGTH = 58;
+    const CAR_WIDTH = 32;
+    const COLLISION_HALF_L = 26.5;
+    const COLLISION_HALF_W = 14.0;
+    const CAR_SPEED = 225; // 每秒邏輯像素速度
+
+    // 最短角度插值 (Lerp Angle)
+    function lerpAngle(a, b, t) {
+      let diff = ((b - a + Math.PI) % (Math.PI * 2)) - Math.PI;
+      if (diff < -Math.PI) diff += Math.PI * 2;
+      return a + diff * Math.min(1, Math.max(0, t));
+    }
+
+    // 將轉角節點陣列轉換為具備圓角過渡 (Bezier Fillet) 的高精度等距取樣路徑
+    function buildSmoothPath(waypoints, cornerRadius = 26) {
+      if (waypoints.length < 2) return { points: waypoints, samples: [], totalLength: 0 };
+
+      const smoothPts = [];
+      smoothPts.push({ x: waypoints[0].x, y: waypoints[0].y });
+
+      for (let i = 1; i < waypoints.length - 1; i++) {
+        const pPrev = waypoints[i - 1];
+        const pCurr = waypoints[i];
+        const pNext = waypoints[i + 1];
+
+        const v1x = pCurr.x - pPrev.x;
+        const v1y = pCurr.y - pPrev.y;
+        const len1 = Math.hypot(v1x, v1y);
+
+        const v2x = pNext.x - pCurr.x;
+        const v2y = pNext.y - pCurr.y;
+        const len2 = Math.hypot(v2x, v2y);
+
+        const r = Math.min(cornerRadius, len1 * 0.45, len2 * 0.45);
+        const startTurn = {
+          x: pCurr.x - (v1x / len1) * r,
+          y: pCurr.y - (v1y / len1) * r
+        };
+        const endTurn = {
+          x: pCurr.x + (v2x / len2) * r,
+          y: pCurr.y + (v2y / len2) * r
+        };
+
+        const steps = 10;
+        for (let s = 0; s <= steps; s++) {
+          const t = s / steps;
+          const omt = 1 - t;
+          const bx = omt * omt * startTurn.x + 2 * omt * t * pCurr.x + t * t * endTurn.x;
+          const by = omt * omt * startTurn.y + 2 * omt * t * pCurr.y + t * t * endTurn.y;
+          smoothPts.push({ x: bx, y: by });
+        }
+      }
+
+      const last = waypoints[waypoints.length - 1];
+      smoothPts.push({ x: last.x, y: last.y });
+
+      // 計算累積弧長與切線方向角
+      const samples = [];
+      let totalLength = 0;
+      for (let i = 0; i < smoothPts.length; i++) {
+        if (i > 0) {
+          totalLength += Math.hypot(
+            smoothPts[i].x - smoothPts[i - 1].x,
+            smoothPts[i].y - smoothPts[i - 1].y
+          );
+        }
+        let angle = 0;
+        if (i < smoothPts.length - 1) {
+          angle = Math.atan2(
+            smoothPts[i + 1].y - smoothPts[i].y,
+            smoothPts[i + 1].x - smoothPts[i].x
+          );
+        } else if (i > 0) {
+          angle = samples[i - 1].angle;
+        }
+        samples.push({
+          x: smoothPts[i].x,
+          y: smoothPts[i].y,
+          dist: totalLength,
+          angle
+        });
+      }
+
+      return { points: smoothPts, samples, totalLength };
+    }
+
+    // 根據行駛距離查詢平滑路徑上的座標與切線角度
+    function samplePathAtDistance(pathObj, dist) {
+      const { samples, totalLength } = pathObj;
+      if (samples.length === 0) return { x: 0, y: 0, angle: 0 };
+      if (dist <= 0) return { x: samples[0].x, y: samples[0].y, angle: samples[0].angle };
+      if (dist >= totalLength) {
+        const last = samples[samples.length - 1];
+        return { x: last.x, y: last.y, angle: last.angle };
+      }
+
+      for (let i = 0; i < samples.length - 1; i++) {
+        const s0 = samples[i];
+        const s1 = samples[i + 1];
+        if (dist >= s0.dist && dist <= s1.dist) {
+          const segLen = s1.dist - s0.dist || 1;
+          const t = (dist - s0.dist) / segLen;
+          return {
+            x: s0.x + (s1.x - s0.x) * t,
+            y: s0.y + (s1.y - s0.y) * t,
+            angle: lerpAngle(s0.angle, s1.angle, t)
+          };
+        }
+      }
+      const last = samples[samples.length - 1];
+      return { x: last.x, y: last.y, angle: last.angle };
+    }
+
+    // ============================================================================
+    // 5. OBB (Oriented Bounding Box) 分離軸定理 (SAT) 精準旋轉矩形碰撞檢測
+    // ============================================================================
+    function getCarOBBCorners(car, halfL = COLLISION_HALF_L, halfW = COLLISION_HALF_W) {
+      const cos = Math.cos(car.angle);
+      const sin = Math.sin(car.angle);
+      const dxL = cos * halfL;
+      const dyL = sin * halfL;
+      const dxW = -sin * halfW;
+      const dyW = cos * halfW;
+
+      return [
+        { x: car.x + dxL + dxW, y: car.y + dyL + dyW },
+        { x: car.x + dxL - dxW, y: car.y + dyL - dyW },
+        { x: car.x - dxL - dxW, y: car.y - dyL - dyW },
+        { x: car.x - dxL + dxW, y: car.y - dyL + dyW }
+      ];
+    }
+
+    function checkOBBCollision(carA, carB) {
+      // 快速外接圓篩選
+      const dx = carB.x - carA.x;
+      const dy = carB.y - carA.y;
+      if (dx * dx + dy * dy > 64 * 64) return false;
+
+      const cornersA = getCarOBBCorners(carA);
+      const cornersB = getCarOBBCorners(carB);
+
+      const axes = [
+        { x: Math.cos(carA.angle), y: Math.sin(carA.angle) },
+        { x: -Math.sin(carA.angle), y: Math.cos(carA.angle) },
+        { x: Math.cos(carB.angle), y: Math.sin(carB.angle) },
+        { x: -Math.sin(carB.angle), y: Math.cos(carB.angle) }
+      ];
+
+      for (const axis of axes) {
+        let minA = Infinity, maxA = -Infinity;
+        for (const p of cornersA) {
+          const proj = p.x * axis.x + p.y * axis.y;
+          if (proj < minA) minA = proj;
+          if (proj > maxA) maxA = proj;
+        }
+        let minB = Infinity, maxB = -Infinity;
+        for (const p of cornersB) {
+          const proj = p.x * axis.x + p.y * axis.y;
+          if (proj < minB) minB = proj;
+          if (proj > maxB) maxB = proj;
+        }
+        if (maxA < minB || maxB < minA) {
+          return false; // 找到分離軸，未碰撞
+        }
+      }
+      return true;
+    }
+
+    // 判斷點擊或滑鼠座標 (px, py) 是否落在某台車的旋轉矩形範圍內 (放大些許方便觸控點擊)
+    function isPointInCar(px, py, car) {
+      const dx = px - car.x;
+      const dy = py - car.y;
+      const cos = Math.cos(-car.angle);
+      const sin = Math.sin(-car.angle);
+      const localX = dx * cos - dy * sin;
+      const localY = dx * sin + dy * cos;
+      return Math.abs(localX) <= CAR_LENGTH * 0.58 && Math.abs(localY) <= CAR_WIDTH * 0.68;
+    }
+
+    // ============================================================================
+    // 6. 遊戲狀態管理與場景裝飾生成
+    // ============================================================================
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let currentLevelIdx = 0;
+    let cars = [];
+    let particles = [];
+    let floatingBadges = [];
+    let trees = [];
+    let levelFailed = false;
+    let levelWon = false;
+    let hoveredCarId = null;
+    let hintedCarId = null;
+    let dashOffset = 0;
+    let shakeTime = 0;
+    let shakeMagnitude = 0;
+
+    // 統計數據
+    let attemptsCount = 1;
+    let hintsUsedCount = 0;
+
+    // 根據當前關卡道路外圍自動佈置綠化樹木裝飾
+    function generateEnvironmentDecor(level) {
+      const candidatePoints = [
+        { x: 65, y: 80, r: 22 }, { x: 120, y: 140, r: 18 }, { x: 85, y: 470, r: 24 },
+        { x: 135, y: 530, r: 19 }, { x: 725, y: 95, r: 24 }, { x: 675, y: 155, r: 18 },
+        { x: 715, y: 465, r: 23 }, { x: 665, y: 525, r: 20 }, { x: 350, y: 480, r: 19 },
+        { x: 655, y: 400, r: 21 }, { x: 110, y: 385, r: 18 }, { x: 735, y: 205, r: 18 }
+      ];
+      trees = candidatePoints.filter(pt => {
+        // 確保樹木不會蓋在任何道路區塊上
+        for (const r of level.roads) {
+          if (
+            pt.x + pt.r + 14 > r.x &&
+            pt.x - pt.r - 14 < r.x + r.w &&
+            pt.y + pt.r + 14 > r.y &&
+            pt.y - pt.r - 14 < r.y + r.h
+          ) {
+            return false;
+          }
+        }
+        return true;
+      });
+    }
+
+    // 載入指定關卡
+    function loadLevel(levelIdx, isRetry = false) {
+      currentLevelIdx = levelIdx;
+      const level = LEVELS[levelIdx];
+
+      if (!isRetry) {
+        attemptsCount = 1;
+        hintsUsedCount = 0;
+      } else {
+        attemptsCount++;
+      }
+
+      levelFailed = false;
+      levelWon = false;
+      hoveredCarId = null;
+      hintedCarId = null;
+      particles = [];
+      floatingBadges = [];
+      shakeTime = 0;
+
+      document.getElementById('crashOverlay').classList.add('hidden');
+      document.getElementById('winModal').classList.add('hidden');
+      document.getElementById('levelSubtitle').textContent = level.title;
+
+      // 建立車輛實例
+      cars = level.cars.map(cfg => {
+        const pathObj = buildSmoothPath(cfg.waypoints, 26);
+        const startSample = pathObj.samples[0];
+        const endSample = pathObj.samples[pathObj.samples.length - 1];
+        return {
+          id: cfg.id,
+          themeKey: cfg.theme,
+          theme: CAR_THEMES[cfg.theme],
+          waypoints: cfg.waypoints,
+          pathObj,
+          startX: startSample.x,
+          startY: startSample.y,
+          startAngle: startSample.angle,
+          targetX: endSample.x,
+          targetY: endSample.y,
+          targetAngle: endSample.angle,
+          x: startSample.x,
+          y: startSample.y,
+          angle: startSample.angle,
+          steerAngle: 0,
+          distance: 0,
+          state: 'waiting', // 'waiting' | 'moving' | 'parked' | 'crashed'
+          pulsePhase: Math.random() * Math.PI * 2
+        };
+      });
+
+      generateEnvironmentDecor(level);
+      updateUIHeader();
+      setStatusBanner('操作指南', '點擊起點車格內的車輛即可發車，將滑鼠移至車上可預覽行駛軌跡！', 'sky');
+    }
+
+    // 更新頂部關卡按鈕與停妥進度
+    function updateUIHeader() {
+      const level = LEVELS[currentLevelIdx];
+      const parkedCount = cars.filter(c => c.state === 'parked').length;
+      document.getElementById('parkedProgress').textContent = `${parkedCount} / ${cars.length}`;
+
+      const selector = document.getElementById('levelSelector');
+      selector.innerHTML = '';
+      LEVELS.forEach((lv, idx) => {
+        const btn = document.createElement('button');
+        const active = idx === currentLevelIdx;
+        btn.className = `btn-game px-2.5 py-1 rounded-lg text-xs font-black transition-all ${
+          active
+            ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-500/30'
+            : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+        }`;
+        btn.textContent = `L${lv.id}`;
+        btn.title = lv.title;
+        btn.onclick = () => loadLevel(idx, false);
+        selector.appendChild(btn);
+      });
+    }
+
+    function setStatusBanner(badgeText, message, color = 'sky') {
+      const badge = document.getElementById('statusBadge');
+      const text = document.getElementById('statusText');
+      const colorMap = {
+        sky: 'bg-sky-500/20 text-sky-300 border-sky-400/30',
+        amber: 'bg-amber-500/20 text-amber-300 border-amber-400/30',
+        emerald: 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30',
+        rose: 'bg-rose-500/20 text-rose-300 border-rose-400/30'
+      };
+      badge.className = `px-2 py-0.5 rounded-md font-bold text-xs border shrink-0 ${colorMap[color] || colorMap.sky}`;
+      badge.textContent = badgeText;
+      text.textContent = message;
+    }
+
+    // ============================================================================
+    // 7. 發車、提示與碰撞回饋邏輯
+    // ============================================================================
+    function launchCar(car) {
+      if (!car || levelFailed || levelWon) return;
+      if (car.state !== 'waiting') return;
+
+      car.state = 'moving';
+      if (hintedCarId === car.id) {
+        hintedCarId = null;
+      }
+      sound.playLaunch();
+
+      // 車尾排氣小煙塵特效
+      const backX = car.x - Math.cos(car.angle) * (CAR_LENGTH * 0.5);
+      const backY = car.y - Math.sin(car.angle) * (CAR_LENGTH * 0.5);
+      for (let i = 0; i < 8; i++) {
+        particles.push({
+          x: backX + (Math.random() - 0.5) * 10,
+          y: backY + (Math.random() - 0.5) * 10,
+          vx: -Math.cos(car.angle) * (25 + Math.random() * 35) + (Math.random() - 0.5) * 20,
+          vy: -Math.sin(car.angle) * (25 + Math.random() * 35) + (Math.random() - 0.5) * 20,
+          r: 4 + Math.random() * 5,
+          color: 'rgba(203, 213, 225, 0.7)',
+          alpha: 0.85,
+          life: 0.45,
+          maxLife: 0.45,
+          type: 'smoke'
+        });
+      }
+
+      setStatusBanner(
+        '發車啟動',
+        `${car.id}號${car.theme.name} 已出發前往 P${car.id} 專屬車位！`,
+        'sky'
+      );
+    }
+
+    // 觸發下一步提示
+    function triggerHint() {
+      if (levelFailed || levelWon) return;
+      const level = LEVELS[currentLevelIdx];
+      hintsUsedCount++;
+      sound.playHint();
+
+      // 檢查是否有已停妥的外側車輛擋住了尚未停妥的內側車輛（死鎖檢測）
+      for (const car of cars) {
+        if (car.state === 'waiting') {
+          // 檢查它的路徑上是否已經有某台 parked 狀態的車停在上面
+          for (const other of cars) {
+            if (other.id !== car.id && other.state === 'parked') {
+              // 檢查 car 的路徑取樣點是否穿過 other 的停放位置
+              const hitParked = car.pathObj.samples.some(
+                s => Math.hypot(s.x - other.x, s.y - other.y) < 34
+              );
+              if (hitParked) {
+                setStatusBanner(
+                  '順序死鎖提示',
+                  `${other.id}號${other.theme.name} 已停在外側車位，擋住了 ${car.id}號${car.theme.name} 通往深處內位的路線！請點擊「重置」重新調度。`,
+                  'rose'
+                );
+                return;
+              }
+            }
+          }
+        }
+      }
+
+      // 依照標準解答順序尋找第一台還在 waiting 的車
+      const nextId = level.solutionOrder.find(id => {
+        const c = cars.find(item => item.id === id);
+        return c && c.state === 'waiting';
+      });
+
+      if (nextId) {
+        hintedCarId = nextId;
+        const targetCar = cars.find(c => c.id === nextId);
+        setStatusBanner(
+          '最佳步驟提示',
+          `建議現在點擊「${targetCar.id}號${targetCar.theme.name}」出發！（${level.hintSummary}）`,
+          'amber'
+        );
+      }
+    }
+
+    // 處理兩車碰撞事件
+    function handleCollision(carA, carB) {
+      levelFailed = true;
+      sound.playCrash();
+
+      const midX = (carA.x + carB.x) / 2;
+      const midY = (carA.y + carB.y) / 2;
+
+      // 判斷碰撞原因以給出精準繁體中文分析
+      let reasonText = '請觀察虛線軌跡預覽，調整正確的發車先後順序。';
+      const states = [carA.state, carB.state];
+      if (states.includes('waiting')) {
+        const waitingCar = carA.state === 'waiting' ? carA : carB;
+        const movingCar = carA.state === 'waiting' ? carB : carA;
+        reasonText = `${movingCar.id}號${movingCar.theme.name} 被尚未出發的 ${waitingCar.id}號${waitingCar.theme.name} 擋住去路！請先讓擋路車駛離。`;
+      } else if (states.includes('parked')) {
+        const parkedCar = carA.state === 'parked' ? carA : carB;
+        const movingCar = carA.state === 'parked' ? carB : carA;
+        reasonText = `${parkedCar.id}號${parkedCar.theme.name} 太早停入外側車位，擋住了 ${movingCar.id}號${movingCar.theme.name} 通往深處車位的路線！`;
+      } else {
+        reasonText = `${carA.id}號${carA.theme.name} 與 ${carB.id}號${carB.theme.name} 在路口同時交會相撞！請拉開安全發車間距或調整順序。`;
+      }
+
+      // 雙車微幅彈開與角度震盪
+      const sepAngle = Math.atan2(carB.y - carA.y, carB.x - carA.x);
+      if (carA.state === 'moving') {
+        carA.x -= Math.cos(sepAngle) * 7;
+        carA.y -= Math.sin(sepAngle) * 7;
+        carA.angle += (Math.random() - 0.5) * 0.28;
+      }
+      if (carB.state === 'moving') {
+        carB.x += Math.cos(sepAngle) * 7;
+        carB.y += Math.sin(sepAngle) * 7;
+        carB.angle += (Math.random() - 0.5) * 0.28;
+      }
+
+      carA.state = 'crashed';
+      carB.state = 'crashed';
+
+      // 啟動畫面震動
+      shakeTime = 0.45;
+      shakeMagnitude = 11;
+
+      // 產生碰撞火花粒子
+      for (let i = 0; i < 28; i++) {
+        const ang = Math.random() * Math.PI * 2;
+        const spd = 45 + Math.random() * 140;
+        particles.push({
+          x: midX,
+          y: midY,
+          vx: Math.cos(ang) * spd,
+          vy: Math.sin(ang) * spd,
+          r: 2.5 + Math.random() * 3.5,
+          color: i % 2 === 0 ? '#fbbf24' : '#f43f5e',
+          alpha: 1,
+          life: 0.55 + Math.random() * 0.25,
+          maxLife: 0.8,
+          type: 'spark'
+        });
+      }
+
+      // 碰撞驚嘆號浮動標記
+      floatingBadges.push({
+        x: midX,
+        y: midY - 12,
+        text: '💥 擦撞！',
+        bg: '#e11d48',
+        life: 2.5,
+        maxLife: 2.5
+      });
+
+      setStatusBanner('發生擦撞', reasonText, 'rose');
+
+      document.getElementById('crashTitle').textContent = `${carA.id}號${carA.theme.name} 與 ${carB.id}號${carB.theme.name} 發生擦撞！`;
+      document.getElementById('crashReason').textContent = reasonText;
+      document.getElementById('crashOverlay').classList.remove('hidden');
+    }
+
+    // 檢查是否全數停妥過關
+    function checkLevelComplete() {
+      if (levelFailed || levelWon) return;
+      const allParked = cars.every(c => c.state === 'parked');
+      if (!allParked) return;
+
+      levelWon = true;
+      sound.playWin();
+
+      // 慶祝煙火紙花粒子
+      const colors = ['#f43f5e', '#fbbf24', '#34d399', '#60a5fa', '#c084fc', '#22d3ee'];
+      for (let i = 0; i < 75; i++) {
+        particles.push({
+          x: LOGICAL_WIDTH * (0.2 + Math.random() * 0.6),
+          y: LOGICAL_HEIGHT * (0.15 + Math.random() * 0.35),
+          vx: (Math.random() - 0.5) * 220,
+          vy: -80 - Math.random() * 150,
+          r: 4 + Math.random() * 4,
+          color: colors[i % colors.length],
+          alpha: 1,
+          life: 1.4 + Math.random() * 0.6,
+          maxLife: 2.0,
+          type: 'confetti'
+        });
+      }
+
+      setStatusBanner('恭喜過關', '所有車輛皆已按照正確順序安全停入專屬車位！', 'emerald');
+
+      setTimeout(() => {
+        if (!levelWon) return;
+        const winModal = document.getElementById('winModal');
+        const isLastLevel = currentLevelIdx === LEVELS.length - 1;
+
+        document.getElementById('winTitle').textContent = isLastLevel
+          ? '🎉 恭喜全破所有關卡！'
+          : `第 ${LEVELS[currentLevelIdx].id} 關 完美過關！`;
+        document.getElementById('winDesc').textContent = isLastLevel
+          ? '您已精通所有順序停車與路口調度挑戰！'
+          : '所有車輛皆按照正確順序安全停入車位';
+
+        document.getElementById('winStatLevel').textContent = `Level ${LEVELS[currentLevelIdx].id}`;
+        document.getElementById('winStatAttempts').textContent = `${attemptsCount} 次`;
+        document.getElementById('winStatHints').textContent = `${hintsUsedCount} 次`;
+
+        // 計算星級
+        const starsCount = attemptsCount === 1 && hintsUsedCount === 0 ? 3 : attemptsCount <= 2 ? 2 : 1;
+        document.getElementById('winStars').innerHTML = Array.from({ length: 3 }, (_, i) =>
+          `<span class="${i < starsCount ? 'opacity-100 scale-110' : 'opacity-25 grayscale'} transition-all inline-block">⭐</span>`
+        ).join('');
+
+        const btnNext = document.getElementById('btnModalNext');
+        btnNext.textContent = isLastLevel ? '從第 1 關重溫 ↻' : '下一關 →';
+
+        winModal.classList.remove('hidden');
+      }, 650);
+    }
+
+    // ============================================================================
+    // 8. 物理更新迴圈 (Update Loop)
+    // ============================================================================
+    function update(dt) {
+      dashOffset = (dashOffset - dt * 48) % 24;
+
+      if (shakeTime > 0) {
+        shakeTime = Math.max(0, shakeTime - dt);
+      }
+
+      // 更新車輛位置與方向角
+      for (const car of cars) {
+        car.pulsePhase += dt * 4.5;
+
+        if (car.state === 'moving' && !levelFailed) {
+          const prevAngle = car.angle;
+          car.distance += CAR_SPEED * dt;
+
+          if (car.distance >= car.pathObj.totalLength) {
+            car.distance = car.pathObj.totalLength;
+            car.x = car.targetX;
+            car.y = car.targetY;
+            car.angle = car.targetAngle;
+            car.steerAngle = 0;
+            car.state = 'parked';
+
+            sound.playParked();
+            updateUIHeader();
+
+            // 停妥星星與綠色勾勾特效
+            floatingBadges.push({
+              x: car.x,
+              y: car.y - 18,
+              text: `✓ P${car.id} 停妥`,
+              bg: '#10b981',
+              life: 1.3,
+              maxLife: 1.3
+            });
+
+            for (let i = 0; i < 14; i++) {
+              const ang = (Math.PI * 2 * i) / 14;
+              particles.push({
+                x: car.x,
+                y: car.y,
+                vx: Math.cos(ang) * (50 + Math.random() * 40),
+                vy: Math.sin(ang) * (50 + Math.random() * 40),
+                r: 3,
+                color: '#34d399',
+                alpha: 1,
+                life: 0.45,
+                maxLife: 0.45,
+                type: 'spark'
+              });
+            }
+
+            checkLevelComplete();
+          } else {
+            const sample = samplePathAtDistance(car.pathObj, car.distance);
+            car.x = sample.x;
+            car.y = sample.y;
+            car.angle = lerpAngle(car.angle, sample.angle, Math.min(1, dt * 16));
+
+            // 計算前輪轉向角視覺效果
+            let angleDelta = ((sample.angle - prevAngle + Math.PI) % (Math.PI * 2)) - Math.PI;
+            if (angleDelta < -Math.PI) angleDelta += Math.PI * 2;
+            car.steerAngle = Math.max(-0.42, Math.min(0.42, angleDelta * 9));
+          }
+        }
+      }
+
+      // 即時碰撞檢測 (任一移動中車輛與其他所有車輛比對)
+      if (!levelFailed && !levelWon) {
+        for (let i = 0; i < cars.length; i++) {
+          for (let j = i + 1; j < cars.length; j++) {
+            const c1 = cars[i];
+            const c2 = cars[j];
+            if (c1.state === 'moving' || c2.state === 'moving') {
+              if (checkOBBCollision(c1, c2)) {
+                handleCollision(c1, c2);
+                break;
+              }
+            }
+          }
+          if (levelFailed) break;
+        }
+      }
+
+      // 更新粒子系統
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.life -= dt;
+        if (p.life <= 0) {
+          particles.splice(i, 1);
+          continue;
+        }
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        if (p.type === 'confetti') {
+          p.vy += 260 * dt; // 重力
+          p.vx *= 0.98;
+        } else {
+          p.vx *= 0.92;
+          p.vy *= 0.92;
+        }
+        p.alpha = Math.max(0, p.life / p.maxLife);
+      }
+
+      // 更新浮動提示標籤
+      for (let i = floatingBadges.length - 1; i >= 0; i--) {
+        const b = floatingBadges[i];
+        b.life -= dt;
+        b.y -= 18 * dt;
+        if (b.life <= 0) {
+          floatingBadges.splice(i, 1);
+        }
+      }
+    }
+
+    // ============================================================================
+    // 9. Canvas 2D 頂視角精緻渲染引擎 (Render Loop)
+    // ============================================================================
+    function drawRoundedRect(ctx, x, y, w, h, r) {
+      const radius = Math.min(r, w / 2, h / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + w - radius, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+      ctx.lineTo(x + w, y + h - radius);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
+      ctx.lineTo(x + radius, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+    }
+
+    function render() {
+      const dpr = window.devicePixelRatio || 1;
+      const scaleX = canvas.width / LOGICAL_WIDTH;
+      const scaleY = canvas.height / LOGICAL_HEIGHT;
+
+      ctx.save();
+      ctx.scale(scaleX, scaleY);
+
+      // 畫面震動偏移
+      if (shakeTime > 0) {
+        const currentMag = shakeMagnitude * (shakeTime / 0.45);
+        const ox = (Math.random() - 0.5) * 2 * currentMag;
+        const oy = (Math.random() - 0.5) * 2 * currentMag;
+        ctx.translate(ox, oy);
+      }
+
+      const level = LEVELS[currentLevelIdx];
+
+      // 1. 繪製城市草地背景與格線紋理
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, LOGICAL_HEIGHT);
+      bgGrad.addColorStop(0, '#132a23');
+      bgGrad.addColorStop(1, '#0f201b');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, LOGICAL_WIDTH, LOGICAL_HEIGHT);
+
+      ctx.strokeStyle = 'rgba(52, 211, 153, 0.04)';
+      ctx.lineWidth = 1;
+      for (let gx = 0; gx < LOGICAL_WIDTH; gx += 40) {
+        ctx.beginPath();
+        ctx.moveTo(gx, 0);
+        ctx.lineTo(gx, LOGICAL_HEIGHT);
+        ctx.stroke();
+      }
+      for (let gy = 0; gy < LOGICAL_HEIGHT; gy += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, gy);
+        ctx.lineTo(LOGICAL_WIDTH, gy);
+        ctx.stroke();
+      }
+
+      // 2. 繪製人行道外緣路緣石 (Sidewalk Curbs)
+      ctx.fillStyle = '#475569';
+      for (const r of level.roads) {
+        drawRoundedRect(ctx, r.x - 8, r.y - 8, r.w + 16, r.h + 16, 16);
+        ctx.fill();
+      }
+
+      // 3. 繪製柏油道路主體
+      ctx.fillStyle = '#1e293b';
+      for (const r of level.roads) {
+        drawRoundedRect(ctx, r.x, r.y, r.w, r.h, 10);
+        ctx.fill();
+      }
+
+      // 4. 繪製斑馬線 (Crosswalks)
+      if (level.crosswalks) {
+        ctx.fillStyle = 'rgba(226, 232, 240, 0.25)';
+        for (const cw of level.crosswalks) {
+          if (cw.dir === 'h') {
+            for (let sx = cw.x; sx < cw.x + cw.w - 4; sx += 11) {
+              ctx.fillRect(sx, cw.y, 6, cw.h);
+            }
+          } else {
+            for (let sy = cw.y; sy < cw.y + cw.h - 4; sy += 11) {
+              ctx.fillRect(cw.x, sy, cw.w, 6);
+            }
+          }
+        }
+      }
+
+      // 5. 繪製起點等待車格與終點專屬 P 停車位
+      for (const car of cars) {
+        // (A) 起點等待車格
+        ctx.save();
+        ctx.translate(car.startX, car.startY);
+        ctx.rotate(car.startAngle);
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.35)';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 4]);
+        drawRoundedRect(ctx, -CAR_LENGTH * 0.56, -CAR_WIDTH * 0.62, CAR_LENGTH * 1.12, CAR_WIDTH * 1.24, 6);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.restore();
+
+        // (B) 終點專屬停車格 (P1 ~ P6)
+        const isHovered = hoveredCarId === car.id || hintedCarId === car.id;
+        ctx.save();
+        ctx.translate(car.targetX, car.targetY);
+        ctx.rotate(car.targetAngle);
+
+        // 車位底色
+        ctx.fillStyle = car.theme.slotBg;
+        drawRoundedRect(ctx, -CAR_LENGTH * 0.6, -CAR_WIDTH * 0.68, CAR_LENGTH * 1.2, CAR_WIDTH * 1.36, 7);
+        ctx.fill();
+
+        // 車位外框 (三面實線開口朝向入庫方向)
+        ctx.strokeStyle = isHovered ? '#ffffff' : car.theme.body;
+        ctx.lineWidth = isHovered ? 3.5 : 2.5;
+        ctx.beginPath();
+        const hw = CAR_WIDTH * 0.68;
+        const hl = CAR_LENGTH * 0.6;
+        ctx.moveTo(-hl, -hw);
+        ctx.lineTo(hl, -hw);
+        ctx.lineTo(hl, hw);
+        ctx.lineTo(-hl, hw);
+        ctx.stroke();
+
+        // 車輪擋塊 (Wheel Stopper)
+        ctx.fillStyle = car.theme.body;
+        ctx.fillRect(hl - 7, -hw + 5, 4, hw * 2 - 10);
+
+        // 繪製車位內的 P 編號字樣 (保持正向易讀)
+        ctx.rotate(-car.targetAngle);
+        ctx.fillStyle = car.theme.accent;
+        ctx.font = '900 13px "Noto Sans TC", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`P${car.id}`, 0, 0);
+        ctx.restore();
+      }
+
+      // 6. 繪製所有未入庫車輛的導引路徑虛線 (懸停或提示時高亮動態流光)
+      for (const car of cars) {
+        if (car.state === 'parked') continue;
+        const isHighlighted = hoveredCarId === car.id || hintedCarId === car.id;
+        const pts = car.pathObj.points;
+        if (pts.length < 2) continue;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(pts[0].x, pts[0].y);
+        for (let i = 1; i < pts.length; i++) {
+          ctx.lineTo(pts[i].x, pts[i].y);
+        }
+
+        if (isHighlighted) {
+          // 發光底線
+          ctx.strokeStyle = car.theme.pathColor;
+          ctx.lineWidth = 8;
+          ctx.globalAlpha = 0.28;
+          ctx.lineCap = 'round';
+          ctx.lineJoin = 'round';
+          ctx.stroke();
+
+          // 動態流動虛線
+          ctx.globalAlpha = 0.95;
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 3.2;
+          ctx.setLineDash([10, 8]);
+          ctx.lineDashOffset = dashOffset;
+          ctx.stroke();
+        } else {
+          ctx.globalAlpha = 0.35;
+          ctx.strokeStyle = car.theme.pathColor;
+          ctx.lineWidth = 2.2;
+          ctx.setLineDash([6, 8]);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      // 7. 繪製周圍景觀樹木
+      for (const tree of trees) {
+        ctx.save();
+        // 樹影
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.28)';
+        ctx.beginPath();
+        ctx.arc(tree.x + 4, tree.y + 5, tree.r, 0, Math.PI * 2);
+        ctx.fill();
+        // 樹冠外層
+        ctx.fillStyle = '#15803d';
+        ctx.beginPath();
+        ctx.arc(tree.x, tree.y, tree.r, 0, Math.PI * 2);
+        ctx.fill();
+        // 樹冠受光層
+        ctx.fillStyle = '#22c55e';
+        ctx.beginPath();
+        ctx.arc(tree.x - tree.r * 0.22, tree.y - tree.r * 0.22, tree.r * 0.65, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // 8. 繪製所有車輛
+      for (const car of cars) {
+        drawTopDownCar(ctx, car);
+      }
+
+      // 9. 繪製粒子特效
+      for (const p of particles) {
+        ctx.save();
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
+        if (p.type === 'confetti') {
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.life * 8);
+          ctx.fillRect(-p.r, -p.r * 0.6, p.r * 2, p.r * 1.2);
+        } else {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      // 10. 繪製浮動標籤 (停妥勾勾、碰撞驚嘆號)
+      for (const b of floatingBadges) {
+        ctx.save();
+        ctx.globalAlpha = Math.min(1, b.life / 0.35);
+        ctx.font = '900 13px "Noto Sans TC", sans-serif';
+        const textWidth = ctx.measureText(b.text).width;
+        const boxW = textWidth + 18;
+        const boxH = 24;
+        ctx.fillStyle = b.bg;
+        drawRoundedRect(ctx, b.x - boxW / 2, b.y - boxH / 2, boxW, boxH, 8);
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(b.text, b.x, b.y + 0.5);
+        ctx.restore();
+      }
+
+      ctx.restore();
+    }
+
+    // 繪製精緻頂視角小汽車 (含車輪、轉向、車燈、擋風玻璃、車頂編號與發車方向箭頭)
+    function drawTopDownCar(ctx, car) {
+      const isHovered = hoveredCarId === car.id && car.state === 'waiting';
+      const isHinted = hintedCarId === car.id && car.state === 'waiting';
+
+      ctx.save();
+      ctx.translate(car.x, car.y);
+
+      // 提示或滑鼠懸停時的光環特效
+      if (isHinted || isHovered) {
+        const pulse = 1 + Math.sin(car.pulsePhase) * 0.1;
+        ctx.save();
+        ctx.rotate(car.angle);
+        ctx.strokeStyle = isHinted ? '#fbbf24' : '#ffffff';
+        ctx.lineWidth = isHinted ? 3 : 2;
+        drawRoundedRect(
+          ctx,
+          (-CAR_LENGTH / 2 - 6) * pulse,
+          (-CAR_WIDTH / 2 - 6) * pulse,
+          (CAR_LENGTH + 12) * pulse,
+          (CAR_WIDTH + 12) * pulse,
+          12
+        );
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      ctx.rotate(car.angle);
+
+      const hl = CAR_LENGTH / 2; // 29
+      const hw = CAR_WIDTH / 2;  // 16
+
+      // 1. 行駛中車頭大燈光束
+      if (car.state === 'moving') {
+        const beamGrad = ctx.createLinearGradient(hl, 0, hl + 48, 0);
+        beamGrad.addColorStop(0, 'rgba(254, 240, 138, 0.42)');
+        beamGrad.addColorStop(1, 'rgba(254, 240, 138, 0)');
+        ctx.fillStyle = beamGrad;
+        ctx.beginPath();
+        ctx.moveTo(hl - 2, -hw + 3);
+        ctx.lineTo(hl + 48, -hw - 12);
+        ctx.lineTo(hl + 48, hw + 12);
+        ctx.lineTo(hl - 2, hw - 3);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // 2. 車身陰影
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.38)';
+      drawRoundedRect(ctx, -hl + 2, -hw + 4, CAR_LENGTH, CAR_WIDTH, 9);
+      ctx.fill();
+
+      // 3. 四顆輪胎 (前輪隨轉彎微幅轉向)
+      const wheelPositions = [
+        { x: hl - 11, y: -hw - 2, front: true },
+        { x: hl - 11, y: hw - 3, front: true },
+        { x: -hl + 11, y: -hw - 2, front: false },
+        { x: -hl + 11, y: hw - 3, front: false }
+      ];
+      ctx.fillStyle = '#090d16';
+      for (const wp of wheelPositions) {
+        ctx.save();
+        ctx.translate(wp.x, wp.y + 1.5);
+        if (wp.front) ctx.rotate(car.steerAngle);
+        drawRoundedRect(ctx, -5.5, -2.5, 11, 5, 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // 4. 車身底漆與立體邊框
+      ctx.fillStyle = car.theme.body;
+      ctx.strokeStyle = car.theme.bodyDark;
+      ctx.lineWidth = 2;
+      drawRoundedRect(ctx, -hl, -hw, CAR_LENGTH, CAR_WIDTH, 9);
+      ctx.fill();
+      ctx.stroke();
+
+      // 5. 前後擋風玻璃 (深藍灰玻璃質感)
+      ctx.fillStyle = '#1e293b';
+      // 前擋風玻璃
+      ctx.beginPath();
+      ctx.moveTo(hl - 10, -hw + 4);
+      ctx.lineTo(hl - 18, -hw + 5.5);
+      ctx.lineTo(hl - 18, hw - 5.5);
+      ctx.lineTo(hl - 10, hw - 4);
+      ctx.closePath();
+      ctx.fill();
+
+      // 後擋風玻璃
+      ctx.beginPath();
+      ctx.moveTo(-hl + 8, -hw + 4.5);
+      ctx.lineTo(-hl + 15, -hw + 5.5);
+      ctx.lineTo(-hl + 15, hw - 5.5);
+      ctx.lineTo(-hl + 8, hw - 4.5);
+      ctx.closePath();
+      ctx.fill();
+
+      // 6. 車頂高光層
+      ctx.fillStyle = car.theme.roof;
+      drawRoundedRect(ctx, -hl + 14, -hw + 5, CAR_LENGTH - 30, CAR_WIDTH - 10, 5);
+      ctx.fill();
+
+      // 7. 車頭燈與車尾煞車燈
+      // 車頭燈 (右側 +x 為車頭)
+      ctx.fillStyle = '#fef08a';
+      ctx.fillRect(hl - 2.5, -hw + 3, 2.5, 5);
+      ctx.fillRect(hl - 2.5, hw - 8, 2.5, 5);
+
+      // 車尾燈 (停妥或碰撞時亮紅燈)
+      ctx.fillStyle = car.state === 'waiting' ? '#991b1b' : '#ff2a4b';
+      ctx.fillRect(-hl, -hw + 3, 2.5, 5);
+      ctx.fillRect(-hl, hw - 8, 2.5, 5);
+
+      // 8. 引擎蓋上的前進方向小箭頭
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+      ctx.beginPath();
+      ctx.moveTo(hl - 3, 0);
+      ctx.lineTo(hl - 8, -3.5);
+      ctx.lineTo(hl - 8, 3.5);
+      ctx.closePath();
+      ctx.fill();
+
+      // 9. 車頂圓形編號徽章 (反轉車身角度使數字永遠正向易讀)
+      ctx.rotate(-car.angle);
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.arc(0, 0, 9.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 11px "Noto Sans TC", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(String(car.id), 0, 0.5);
+
+      // 若為提示目標車，在車頂上方顯示醒目金色標籤
+      if (isHinted) {
+        const tagY = -28 + Math.sin(car.pulsePhase * 1.5) * 3;
+        ctx.fillStyle = '#fbbf24';
+        drawRoundedRect(ctx, -34, tagY - 10, 68, 20, 6);
+        ctx.fill();
+        ctx.fillStyle = '#0f172a';
+        ctx.font = '900 11px "Noto Sans TC", sans-serif';
+        ctx.fillText('👆 先點這台', 0, tagY);
+      }
+
+      ctx.restore();
+    }
+
+    // ============================================================================
+    // 10. 畫布自適應縮放與滑鼠/觸控互動事件綁定
+    // ============================================================================
+    function resizeCanvas() {
+      const wrapper = document.getElementById('canvasWrapper');
+      const rect = wrapper.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+      render();
+    }
+
+    function getLogicalCoords(clientX, clientY) {
+      const rect = canvas.getBoundingClientRect();
+      const x = ((clientX - rect.left) / rect.width) * LOGICAL_WIDTH;
+      const y = ((clientY - rect.top) / rect.height) * LOGICAL_HEIGHT;
+      return { x, y };
+    }
+
+    canvas.addEventListener('pointermove', e => {
+      const pt = getLogicalCoords(e.clientX, e.clientY);
+      let found = null;
+      for (const car of cars) {
+        if (car.state === 'waiting' && isPointInCar(pt.x, pt.y, car)) {
+          found = car.id;
+          break;
+        }
+      }
+      hoveredCarId = found;
+      canvas.style.cursor = found ? 'pointer' : 'default';
+    });
+
+    canvas.addEventListener('pointerleave', () => {
+      hoveredCarId = null;
+    });
+
+    canvas.addEventListener('pointerdown', e => {
+      e.preventDefault();
+      const pt = getLogicalCoords(e.clientX, e.clientY);
+      for (const car of cars) {
+        if (car.state === 'waiting' && isPointInCar(pt.x, pt.y, car)) {
+          launchCar(car);
+          break;
+        }
+      }
+    });
+
+    // 頂部與彈窗按鈕事件
+    document.getElementById('btnHint').addEventListener('click', () => triggerHint());
+    document.getElementById('btnReset').addEventListener('click', () => loadLevel(currentLevelIdx, true));
+    document.getElementById('btnCrashRetry').addEventListener('click', () => loadLevel(currentLevelIdx, true));
+
+    document.getElementById('btnSound').addEventListener('click', () => {
+      sound.enabled = !sound.enabled;
+      document.getElementById('iconSoundOn').classList.toggle('hidden', !sound.enabled);
+      document.getElementById('iconSoundOff').classList.toggle('hidden', sound.enabled);
+    });
+
+    document.getElementById('btnModalReplay').addEventListener('click', () => {
+      loadLevel(currentLevelIdx, false);
+    });
+
+    document.getElementById('btnModalNext').addEventListener('click', () => {
+      const nextIdx = (currentLevelIdx + 1) % LEVELS.length;
+      loadLevel(nextIdx, false);
+    });
+
+    // 鍵盤快捷鍵支援 (1~6 發車、H 提示、R 重置、M 靜音)
+    window.addEventListener('keydown', e => {
+      const key = e.key.toLowerCase();
+      if (key >= '1' && key <= '6') {
+        const num = parseInt(key, 10);
+        const target = cars.find(c => c.id === num && c.state === 'waiting');
+        if (target) launchCar(target);
+      } else if (key === 'r') {
+        loadLevel(currentLevelIdx, true);
+      } else if (key === 'h') {
+        triggerHint();
+      } else if (key === 'm') {
+        document.getElementById('btnSound').click();
+      }
+    });
+
+    window.addEventListener('resize', resizeCanvas);
+
+    // ============================================================================
+    // 11. 啟動遊戲主迴圈
+    // ============================================================================
+    let lastTimestamp = 0;
+    function gameLoop(timestamp) {
+      if (!lastTimestamp) lastTimestamp = timestamp;
+      const dt = Math.min(0.05, (timestamp - lastTimestamp) / 1000);
+      lastTimestamp = timestamp;
+
+      update(dt);
+      render();
+      requestAnimationFrame(gameLoop);
+    }
+
+    window.onload = function () {
+      loadLevel(0, false);
+      resizeCanvas();
+      requestAnimationFrame(gameLoop);
+    };
+  </script>
+</body>
+</html>
