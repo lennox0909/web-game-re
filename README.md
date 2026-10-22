@@ -1,6 +1,6 @@
 # Reverse Engineer Web Game
 
-網頁 `[https://www.wesane.com/game/649/](https://www.wesane.com/game/649/)` 是**微傘遊戲（Wesane Game）**平台上的 HTML5 益智小遊戲——**《Order Parking》（順序停車）**。由於該網頁採用遊戲引擎動態渲染畫面，一般爬蟲或檢視原始碼時只會看到標題與 `loading......` 字樣。
+網頁 [https://www.wesane.com/game/649/](https://www.wesane.com/game/649/) 是**微傘遊戲（Wesane Game）**平台上的 HTML5 益智小遊戲——**《Order Parking》（順序停車）**。由於該網頁採用遊戲引擎動態渲染畫面，一般爬蟲或檢視原始碼時只會看到標題與 `loading......` 字樣。
 
 以下從**遊戲內容**、**前端技術架構**以及**開發者逆向／資源檢視方式**三個維度解析：
 
@@ -158,7 +158,7 @@ if __name__ == "__main__":
 如果你不想執行 Python 腳本，可以直接使用瀏覽器開發者擴充套件：
 
 1. 在 Chrome 線上應用程式商店安裝 **Save All Resources** 擴充套件。
-2. 開啟 `[https://www.wesane.com/game/649/](https://www.wesane.com/game/649/)`，按下 `F12` 打開開發者工具（DevTools）。
+2. 開啟 [https://www.wesane.com/game/649/](https://www.wesane.com/game/649/)，按下 `F12` 打開開發者工具（DevTools）。
 3. 在 DevTools 頂部導覽列找到並切換至 **`ResourcesSaver`** 分頁。
 4. 重新整理網頁（`F5`），等待遊戲載入完畢並點擊進入遊戲畫面（讓所有音效與圖片載入）。
 5. 勾選 **`Keep folder structure`**（保留資料夾結構），點擊 **`Save All Resources`**，瀏覽器就會將整包遊戲資源壓縮成 `.zip` 下載到電腦中。
