@@ -23,10 +23,12 @@
 
   <link rel="stylesheet" type="text/css" href="style-mobile.css"/>
 </head>
-<body style="margin: 0; background: #ddd;" align="center">
-  <div id="canvasDiv" style="width:100%;height:100%;">
-    <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
-    <div id="block-Box" style="display:block;width:100%;height:100%;"></div>
+<body style="margin: 0; background: #9ed87e; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw;">
+  
+  <!-- max-width: 56.25vh 確保寬度永遠不會超過高度的 9/16 比例 -->
+  <div id="canvasDiv" style="position: relative; width: 100vw; height: 100vh; max-width: 56.25vh; display: flex; justify-content: center; align-items: center;">
+    <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="0" style="width: 100%; height: 100%;"></canvas>
+    <div id="block-Box" style="display:none;width:100%;height:100%;position:absolute;top:0;left:0;"></div>
   </div>
 
   <div id="loadingText" style="width:100%;display:none;text-align:center;position:absolute;top:45%;z-index:2;font-size:20px;color:#f99f0a">
@@ -40,7 +42,6 @@
   </div>
 
   <script type="text/javascript">
-    // 保留主程式可能讀取的全域狀態與空廣告介面，避免腳本報錯
     var preloader;
     var adCompleteFlag = true;
     var resCompleteFlag = true;
@@ -81,13 +82,9 @@
       totalCount: 0
     };
 
-    onload();
-    function onload() {
-      var winHeight = document.documentElement.clientHeight;
-      document.getElementById("canvasDiv").style.height = winHeight + "px";
-    }
     window.onload = function() {
-      document.getElementById("block-Box").style.display = "none";
+      var blockBox = document.getElementById("block-Box");
+      if(blockBox) blockBox.style.display = "none";
     };
 
     function updateLabView(t) {
@@ -145,7 +142,7 @@
       }
 
       var splash = document.getElementById('splash');
-      splash.style.display = 'block';
+      if(splash) splash.style.display = 'block';
 
       var cocos2d = document.createElement('script');
       cocos2d.async = true;

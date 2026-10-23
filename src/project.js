@@ -3276,7 +3276,7 @@ window.__require = function e(t, n, o) {
                 this.lvbox2 = this.lvBox.getChildByName("lvbox2"),
                 this.nextLv = this.lvbox2.getChildByName("nextLv").getComponent(cc.Label),
                 this.progressBar = this.lvBox.getChildByName("progress").getComponent(cc.ProgressBar),
-                this.lvBox.y = this.MainGame.gameHeight / 2 - 90,
+                this.lvBox.y = this.MainGame.gameHeight / 2 - 60,
                 this.moreBtn.node.x = -this.MainGame.gameWidth / 2 + 60,
                 this.moreBtn.node.y = this.MainGame.gameHeight / 2 - 60,
                 this.gameOverPanel.getChildByName("info").y = this.moreBtn.node.y - 280 * this.MainGame.gameHeight / 1280,
@@ -3299,7 +3299,42 @@ window.__require = function e(t, n, o) {
                 this.continue.getComponent(cc.Label).string = this.continueStringArr[this.langNumType - 1],
                 this.gameOverInfo.getChildByName("gameOverInfo1").getComponent(cc.Label).string = this.gameOverInfo1StringArr[this.langNumType - 1],
                 this.gameOverInfo.getChildByName("gameOverInfo2").getComponent(cc.Label).string = this.gameOverInfo2StringArr[this.langNumType - 1],
-                this.addClickBtns()
+                this.addClickBtns();
+                
+                // 動態建立音效開關按鈕（強化靜音版）
+                window.gameIsMuted = window.gameIsMuted || false;
+                var audioBtn = new cc.Node("AudioBtn");
+                var label = audioBtn.addComponent(cc.Label);
+                label.string = window.gameIsMuted ? "🔇" : "🔊";
+                label.fontSize = 45;
+                audioBtn.setContentSize(100, 100); // 1. 強制賦予 100x100 的點擊範圍
+                this.lvBox.addChild(audioBtn); 
+                audioBtn.setPosition(cc.v2(280, 0));
+                
+                // 2. 攔截底層播放 API，確保靜音時新產生的音效強制無聲
+                if (!window.audioPatched) {
+                    window.audioPatched = true;
+                    var origPlay = cc.audioEngine.play;
+                    cc.audioEngine.play = function(clip, loop, vol) {
+                        return origPlay.call(cc.audioEngine, clip, loop, window.gameIsMuted ? 0 : vol);
+                    };
+                }
+                
+                audioBtn.on(cc.Node.EventType.TOUCH_END, function(e) {
+                    e.stopPropagation(); 
+                    window.gameIsMuted = !window.gameIsMuted;
+                    label.string = window.gameIsMuted ? "🔇" : "🔊";
+                    
+                    if (window.gameIsMuted) {
+                        cc.audioEngine.setMusicVolume(0);
+                        cc.audioEngine.setEffectsVolume(0);
+                        cc.audioEngine.pauseAll(); // 3. 立即暫停目前發出聲音的車輛/背景樂
+                    } else {
+                        cc.audioEngine.setMusicVolume(1);
+                        cc.audioEngine.setEffectsVolume(1);
+                        cc.audioEngine.resumeAll(); // 恢復聲音
+                    }
+                });
             },
             start: function() {},
             cutscenes: function() {
@@ -3308,21 +3343,25 @@ window.__require = function e(t, n, o) {
                 this.MainGame.MainCamera.cameraMove(),
                 this.MainGame.MapCon.initMap()
             },
-            initLvBox: function() {
+            initLvBox: function () {
                 this.lvBox.active = !0,
-                this.progressBar.progress = 0,
-                this.MainGame.sceneScore.string = this.MainGame.gameScore.toString();
+                    this.progressBar.progress = 0,
+                    this.MainGame.sceneScore.string = this.MainGame.gameScore.toString();
                 var e = this.MainGame.gameScore + 1;
                 this.nextLv.string = e.toString(),
-                e >= 10 && e < 100 ? (this.lvbox1.width = 100,
-                this.lvbox2.width = 100) : e >= 100 && e < 1e3 ? (this.lvbox1.width = 130,
-                this.lvbox2.width = 130) : e >= 1e3 && e < 1e4 ? (this.lvbox1.width = 170,
-                this.lvbox2.width = 170) : e >= 1e4 && e < 1e5 ? (this.lvbox1.width = 210,
-                this.lvbox2.width = 210) : e >= 1e5 && e < 1e6 ? (this.lvbox1.width = 250,
-                this.lvbox2.width = 250) : e >= 1e6 && (this.lvbox1.width = 290,
-                this.lvbox2.width = 290),
-                this.lvbox1.x = -100 - this.lvbox1.width / 2,
-                this.lvbox2.x = 100 + this.lvbox1.width / 2
+                    e >= 10 && e < 100 ? (this.lvbox1.width = 100,
+                        this.lvbox2.width = 100) : e >= 100 && e < 1e3 ? (this.lvbox1.width = 130,
+                            this.lvbox2.width = 130) : e >= 1e3 && e < 1e4 ? (this.lvbox1.width = 170,
+                                this.lvbox2.width = 170) : e >= 1e4 && e < 1e5 ? (this.lvbox1.width = 210,
+                                    this.lvbox2.width = 210) : e >= 1e5 && e < 1e6 ? (this.lvbox1.width = 250,
+                                        this.lvbox2.width = 250) : e >= 1e6 && (this.lvbox1.width = 290,
+                                            this.lvbox2.width = 290),
+                    this.lvbox1.x = -100 - this.lvbox1.width / 2,
+                    this.lvbox2.x = 100 + this.lvbox1.width / 2;
+
+                // 恢復原始大小與預設的 Y 軸位置
+                this.lvBox.scale = 1;
+                this.lvBox.y = this.MainGame.gameHeight / 2 - 90;
             },
             setProgress: function(e) {
                 for (var t = e / 30, n = 0; n < 30; n++)

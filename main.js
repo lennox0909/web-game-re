@@ -98,6 +98,23 @@ window.boot = function () {
         cc.view.enableRetina(true);
         cc.view.resizeWithBrowserSize(true);
 
+        // --- 動態偵測螢幕比例與寬螢幕適配 ---
+        var browserWidth = document.documentElement.clientWidth;
+        var browserHeight = document.documentElement.clientHeight;
+        var browserRatio = browserWidth / browserHeight;
+        var standardRatio = 720 / 1280; // 標準直向比例
+
+/*         if (browserRatio > standardRatio) {
+            // 寬螢幕 / 桌面端：固定高度，讓寬度往兩側延展，維持遊戲不變形
+            cc.view.setDesignResolutionSize(720, 1280, cc.ResolutionPolicy.FIXED_HEIGHT);
+        } else {
+            // 一般手機直向螢幕：固定寬度，高度上下延伸
+            cc.view.setDesignResolutionSize(720, 1280, cc.ResolutionPolicy.FIXED_WIDTH);
+        } */
+       // 無論螢幕比例，強制鎖定為原生的直向佈局 (SHOW_ALL 模式)
+        cc.view.setDesignResolutionSize(720, 1280, cc.ResolutionPolicy.SHOW_ALL);
+        // ------------------------------------
+
         if (cc.sys.isBrowser) {
             setLoadingDisplay();
         }
