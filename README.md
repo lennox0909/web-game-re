@@ -322,3 +322,28 @@ del ads.js, project_structure.txt, res\share.jpg
 * **`res/import/`（全數保留）**：所有場景排版、車輛碰撞框與大圖集切片座標的 `.json` 設定檔。
 * **`res/raw-assets/`（全數保留）**：遊戲所有的 `.png` 圖片圖集與 `.mp3` 音效檔。
 
+## decode all Unicode `\uXXXX` at once
+
+- create `decode.js` at project root directory
+
+    ```javascript
+    const fs = require('fs');
+    const filePath = 'src/project.js'; // 確認檔案路徑
+
+    let code = fs.readFileSync(filePath, 'utf8');
+    // 抓出所有 \uXXXX 格式並轉換為實際字元
+    let decodedCode = code.replace(/\\u([0-9a-fA-F]{4})/g, (match, grp) => {
+        return String.fromCharCode(parseInt(grp, 16));
+    });
+
+    fs.writeFileSync(filePath, decodedCode, 'utf8');
+    console.log('解碼完成！');
+    ```
+
+- execute at Terminal
+
+```bash
+node decode.js
+```
+
+- Done!

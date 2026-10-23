@@ -1,0 +1,4 @@
+exclude:
+  - "experiment/"         # 排除整個開發資料夾
+  # - "level_editor.html" # 排除特定 HTML 檔案
+  # - "test_assets/"      # 排除測試用資源夾
