@@ -1149,15 +1149,11 @@ window.__require = function e(t, n, o) {
         cc._RF.push(t, "3ef908fwfNIwJsOjET8tCh2", "LoadSceneJs");
         var o = {
             goToCover: function(e, t, n, o, a) {
-                var c = e;
-                c = null == c || void 0 == c || e,
-                console.log("LoadBoolBeforeLoadS", c),
-                this.needShow = !1,
-                c && c ? (this.needShow = !0,
-                showMyAds()) : this.needShow = !1,
-                this.needShow ? (void 0 == preloader && this.startGoToGame(n, o, a),
-                resCompleteFlag = !0,
-                adCompleteFlag && resCompleteFlag && this.startGoToGame(n, o, a)) : this.startGoToGame(n, o, a)
+                var loadText = document.getElementById("loadingText");
+                if (loadText) loadText.style.display = "none";
+                var splash = document.getElementById("splash");
+                if (splash) splash.style.display = "none";
+                this.startGoToGame(n, o, a);
             },
             startGoToGame: function(e, t, n) {
                 cc.director.loadScene(e,t,n)
@@ -1446,36 +1442,31 @@ window.__require = function e(t, n, o) {
             playAgainText: null,
             endHttpShowInfo: null,
             moreGameUrl: null,
-            init: function(e, t, n) {
-                if (!c.publicGameBool) {
-                    if (c.playNum >= 1)
-                        return;
-                    c.playNum++
-                }
-                c.launchScene = e,
-                c.Bros = t,
-                c.caS = n,
-                this.curType = 1,
-                this.getHttpGameId(),
-                this.gamePV_load(),
-                console.log("thisg", this.gameHttpId),
-                o.httpInitUrl(this.gameHttpId),
-                o.send("101", null, this.getLinkGameReturn, this);
-                var a = this.initLanguage();
-                this.gameNameText = a.game_name,
-                this.gameInfoText = a.game_info,
-                this.txtStartText = a.txtStart,
-                this.txtMoreText = a.txtMore,
-                this.txtAgainText = a.txtAgain,
-                this.gameEndLText = a.gameEndL,
-                this.gameEndL1Text = a.gameEndL1,
-                this.bgLayRgb = a.bgRgb,
-                this.gameEndName1 = a.gameT2,
-                this.gameEndName2 = a.gameT3,
-                this.gameEndUrl1 = a.gameUrl1,
-                this.gameEndUrl2 = a.gameUrl2,
-                this.langugeType = this.curType
-            },
+        init: function(e, t, n) {
+            c.launchScene = e;
+            this.curType = 1;
+            var a = this.initLanguage();
+            this.gameNameText = a.game_name,
+            this.gameInfoText = a.game_info,
+            this.txtStartText = a.txtStart,
+            this.txtMoreText = a.txtMore,
+            this.txtAgainText = a.txtAgain,
+            this.gameEndLText = a.gameEndL,
+            this.gameEndL1Text = a.gameEndL1,
+            this.bgLayRgb = a.bgRgb,
+            this.gameEndName1 = a.gameT2,
+            this.gameEndName2 = a.gameT3,
+            this.gameEndUrl1 = a.gameUrl1,
+            this.gameEndUrl2 = a.gameUrl2,
+            this.langugeType = this.curType;
+            
+            // 強制隱藏 loading 文字並直接載入遊戲場景
+            var loadText = document.getElementById("loadingText");
+            if (loadText) loadText.style.display = "none";
+            var splash = document.getElementById("splash");
+            if (splash) splash.style.display = "none";
+            cc.director.loadScene(e);
+        },
             getHttpGameId: function() {
                 var e = window.location.href
                   , t = e.substring(0, e.lastIndexOf("//") + 2)
@@ -1523,12 +1514,8 @@ window.__require = function e(t, n, o) {
                 }
             },
             initLanguage: function() {
-                var e = null;
-                return cc.sys.language == cc.sys.LANGUAGE_CHINESE ? (this.curType = 1,
-                e = a.language_1) : (cc.log("\u82f1\u6587"),
-                this.curType = 2,
-                e = a.language_2),
-                e
+                this.curType = 1;
+                return a.language_1;
             },
             getLinkGameReturn: function(e, t, n, o) {
 
@@ -3356,20 +3343,7 @@ window.__require = function e(t, n, o) {
                 this.hand.active = !1
             },
             returnCurrentLanType: function() {
-                var e = 1;
-                switch (cc.sys.language) {
-                case cc.sys.LANGUAGE_CHINESE:
-                    "zh-TW" == window.navigator.language || "zh-tw" == window.navigator.language || "zh-HK" == window.navigator.language || "zh-hk" == window.navigator.language ? (cc.log("\u7e41\u4f53"),
-                    e = 2) : (cc.log("\u7b80\u4f53"),
-                    e = 1);
-                    break;
-                case cc.sys.LANGUAGE_KOREAN:
-                    e = 4;
-                    break;
-                default:
-                    e = 3
-                }
-                return e
+                return 2;
             },
             addTouchEvents: function() {
                 var e = this
@@ -3496,36 +3470,38 @@ window.__require = function e(t, n, o) {
                 document.title = t
             },
             getContentByScore: function(e, t, n) {
-                var o = "\u6211\u771f\u662f\u592a\u5389\u5bb3\uff0c\u5728" + t + "\u4e2d\u7adf\u7136\u5f97\u4e860\u5206\uff0c\u5168\u7403\u53ea\u67091\u4e2a\u4eba\u5f970\u5206\uff01"
-                  , a = "\u51fb\u8d25\u4e86\u5168\u74030%\u7684\u73a9\u5bb6\uff01"
-                  , c = parseInt(.6 * this.standardScore)
-                  , r = parseInt(1.5 * this.standardScore)
-                  , i = parseInt(2.5 * this.standardScore)
-                  , s = parseInt(4 * this.standardScore);
-                if (e >= 0 && e <= c)
-                    o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u771f\u662f\u592a\u68d2\u4e86\uff0c\u518d\u7ec3\u7ec3\u5c31\u80fd\u5f97\u5fc3\u5e94\u624b!",
-                    a = "\u51fb\u8d25\u4e86\u5168\u7403" + Math.floor(10 * e / c) + "%\u7684\u73a9\u5bb6\uff01";
-                else if (e > c && e <= this.standardScore) {
-                    o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u771f\u662f\u592a\u68d2\u4e86\uff0c\u518d\u7ec3\u7ec3\u5c31\u80fd\u8fbe\u5230\u6e38\u5203\u6709\u4f59\u7684\u5883\u754c\uff01",
-                    a = "\u51fb\u8d25\u4e86\u5168\u7403" + (Math.floor(15 * (e - this.standardScore) / (c - this.standardScore)) + 20) + "%\u7684\u73a9\u5bb6\uff01"
-                } else if (e > this.standardScore && e <= r) {
-                    var h = Math.floor(20 * (e - this.standardScore) / (r - this.standardScore)) + 35;
-                    o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u51fb\u8d25\u4e86\u5168\u7403" + h + "%\u7684\u73a9\u5bb6\uff0c\u8fdb\u5165\u4e86\u4fe1\u624b\u62c8\u6765\u7684\u5883\u754c\uff01",
-                    a = "\u51fb\u8d25\u4e86\u5168\u7403" + h + "%\u7684\u73a9\u5bb6\uff01"
-                } else if (e > r && e <= i) {
-                    var l = Math.floor(30 * (e - r) / (i - r)) + 55;
-                    o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u51fb\u8d25\u4e86\u5168\u7403" + l + "%\u7684\u73a9\u5bb6\uff0c\u8fdb\u5165\u4e86\u8fd0\u7528\u81ea\u5982\u7684\u5883\u754c\uff01",
-                    a = "\u51fb\u8d25\u4e86\u5168\u7403" + l + "%\u7684\u73a9\u5bb6\uff01"
-                } else if (e > i && e <= s) {
-                    o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u51fb\u8d25\u4e86\u5168\u740399%\u7684\u73a9\u5bb6\uff0c\u8fbe\u5230\u4e86\u884c\u4e91\u6d41\u6c34\u7684\u5883\u754c\uff01",
-                    a = "\u51fb\u8d25\u4e86\u5168\u7403" + (Math.floor(10 * (e - i) / (s - i)) + 85) + "%\u7684\u73a9\u5bb6\uff01"
-                } else if (e > s && e < this.game_max_score) {
-                    o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u636e\u8bf4\u5168\u7403\u53ea\u6709 " + (20 - Math.ceil(17 * (e - s) / (this.game_max_score - s))) + "\u4e2a\u4eba\u8fbe\u5230\u8fd9\u4e2a\u6c34\u5e73\uff0c\u72ec\u5b64\u6c42\u8d25\uff01",
-                    a = "\u51fb\u8d25\u4e86\u5168\u740399%\u7684\u73a9\u5bb6\uff01"
-                } else
-                    e >= this.game_max_score && (o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u8d85\u8d8a\u4e86\u72ec\u5b64\u6c42\u8d25\uff0c\u5fc3\u6709\u7075\u7280\uff01",
-                    a = "\u51fb\u8d25\u4e86\u5168\u7403100%\u7684\u73a9\u5bb6\uff01");
-                return n ? a : o
+                        var o = "我真是太厲害，在" + t + "中竟然得了0分，全球只有1個人得0分！",
+                            a = "擊敗了全球0%的玩家！",
+                            c = parseInt(.6 * this.standardScore),
+                            r = parseInt(1.5 * this.standardScore),
+                            i = parseInt(2.5 * this.standardScore),
+                            s = parseInt(4 * this.standardScore);
+                        
+                        if (e >= 0 && e <= c) {
+                            o = "我在" + t + "中得了" + e + "分，真是太棒了，再練練就能得心應手！";
+                            a = "擊敗了全球" + Math.floor(10 * e / c) + "%的玩家！";
+                        } else if (e > c && e <= this.standardScore) {
+                            o = "我在" + t + "中得了" + e + "分，真是太棒了，再練練就能達到游刃有餘的境界！";
+                            a = "擊敗了全球" + (Math.floor(15 * (e - this.standardScore) / (c - this.standardScore)) + 20) + "%的玩家！";
+                        } else if (e > this.standardScore && e <= r) {
+                            var h = Math.floor(20 * (e - this.standardScore) / (r - this.standardScore)) + 35;
+                            o = "我在" + t + "中得了" + e + "分，擊敗了全球" + h + "%的玩家，進入了信手拈來的境界！";
+                            a = "擊敗了全球" + h + "%的玩家！";
+                        } else if (e > r && e <= i) {
+                            var l = Math.floor(30 * (e - r) / (i - r)) + 55;
+                            o = "我在" + t + "中得了" + e + "分，擊敗了全球" + l + "%的玩家，進入了運用自如的境界！";
+                            a = "擊敗了全球" + l + "%的玩家！";
+                        } else if (e > i && e <= s) {
+                            o = "我在" + t + "中得了" + e + "分，擊敗了全球99%的玩家，達到了行雲流水的境界！";
+                            a = "擊敗了全球" + (Math.floor(10 * (e - i) / (s - i)) + 85) + "%的玩家！";
+                        } else if (e > s && e < this.game_max_score) {
+                            o = "我在" + t + "中得了" + e + "分，據說全球只有 " + (20 - Math.ceil(17 * (e - s) / (this.game_max_score - s))) + "個人達到這個水平，獨孤求敗！";
+                            a = "擊敗了全球99%的玩家！";
+                        } else if (e >= this.game_max_score) {
+                            o = "我在" + t + "中得了" + e + "分，超越了獨孤求敗，心有靈犀！";
+                            a = "擊敗了全球100%的玩家！";
+                        }
+                        return n ? a : o;
             },
             getContentByScore2: function(e, t, n) {
                 var o = "I'm awesome\uff0cin" + t + "get 0 score\uff0conly one person in the world has a 0\uff01"
@@ -3675,20 +3651,7 @@ window.__require = function e(t, n, o) {
                 this.maxScoreText.string = e + o
             },
             returnCurrentLanType: function() {
-                var e = 1;
-                switch (cc.sys.language) {
-                case cc.sys.LANGUAGE_CHINESE:
-                    "zh-TW" == window.navigator.language || "zh-tw" == window.navigator.language || "zh-HK" == window.navigator.language || "zh-hk" == window.navigator.language ? (cc.log("\u7e41\u4f53"),
-                    e = 2) : (cc.log("\u7b80\u4f53"),
-                    e = 1);
-                    break;
-                case cc.sys.LANGUAGE_KOREAN:
-                    e = 4;
-                    break;
-                default:
-                    e = 3
-                }
-                return e
+                return 2;
             },
             setHisSocre: function(e) {
                 cc.sys.localStorage.setItem("HigScore_JiaoTong", e)
