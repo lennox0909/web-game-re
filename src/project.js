@@ -1441,7 +1441,7 @@ window.__require = function e(t, n, o) {
             moreGameText: null,
             playAgainText: null,
             endHttpShowInfo: null,
-            moreGameUrl: null,
+            moreGameUrl: "level_editor.html",
         init: function(e, t, n) {
             c.launchScene = e;
             this.curType = 1;
@@ -3285,7 +3285,7 @@ window.__require = function e(t, n, o) {
                 this.gameOverPanel.getChildByName("button").y = this.gameOverPanel.getChildByName("park").y + 350 * this.MainGame.gameHeight / 1280,
                 this.standardScore = c.standScore,
                 this.canNotTouch = !0,
-                this.game_max_score = 5e3,
+                this.game_max_score = 1e6,
                 this.over = !1,
                 this.ads2Open = !0,
                 this.gameOverInfo1StringArr = ["\u6e38  \u620f  \u7ed3  \u675f", "\u904a  \u6232  \u7d50  \u675f", "Game Over", "\uac8c\uc784 \ub05d"],
@@ -3317,8 +3317,10 @@ window.__require = function e(t, n, o) {
                 e >= 10 && e < 100 ? (this.lvbox1.width = 100,
                 this.lvbox2.width = 100) : e >= 100 && e < 1e3 ? (this.lvbox1.width = 130,
                 this.lvbox2.width = 130) : e >= 1e3 && e < 1e4 ? (this.lvbox1.width = 170,
-                this.lvbox2.width = 170) : e >= 1e4 && (this.lvbox1.width = 210,
-                this.lvbox2.width = 210),
+                this.lvbox2.width = 170) : e >= 1e4 && e < 1e5 ? (this.lvbox1.width = 210,
+                this.lvbox2.width = 210) : e >= 1e5 && e < 1e6 ? (this.lvbox1.width = 250,
+                this.lvbox2.width = 250) : e >= 1e6 && (this.lvbox1.width = 290,
+                this.lvbox2.width = 290),
                 this.lvbox1.x = -100 - this.lvbox1.width / 2,
                 this.lvbox2.x = 100 + this.lvbox1.width / 2
             },
@@ -3404,7 +3406,9 @@ window.__require = function e(t, n, o) {
                 c.gameMaxScore >= 10 && c.gameMaxScore < 100 ? (this.jb.x = -40,
                 this.gameMaxScore.node.x = 30) : c.gameMaxScore >= 100 && c.gameMaxScore < 1e3 ? (this.jb.x = -60,
                 this.gameMaxScore.node.x = 30) : c.gameMaxScore >= 1e3 && c.gameMaxScore < 1e4 ? (this.jb.x = -75,
-                this.gameMaxScore.node.x = 30) : c.gameMaxScore >= 1e4 && (this.jb.x = -95,
+                this.gameMaxScore.node.x = 30) : c.gameMaxScore >= 1e4 && c.gameMaxScore < 1e5 ? (this.jb.x = -95,
+                this.gameMaxScore.node.x = 30) : c.gameMaxScore >= 1e5 && c.gameMaxScore < 1e6 ? (this.jb.x = -115,
+                this.gameMaxScore.node.x = 30) : c.gameMaxScore >= 1e6 && (this.jb.x = -135,
                 this.gameMaxScore.node.x = 30),
                 this.UIPosChange(),
                 this.gameOverPanel.active = !0,
@@ -3698,8 +3702,8 @@ window.__require = function e(t, n, o) {
                 var e = this;
                 e.moreBtn.node.on(cc.Node.EventType.TOUCH_START, function(e) {}),
                 e.moreBtn.node.on(cc.Node.EventType.TOUCH_END, function(e) {
-                    console.log("MoreGame"),
-                    window.location.href = c.moreGameUrl
+                    console.log("Go to Level Editor"),
+                    window.location.href = "level_editor.html"
                 }),
                 e.leftBtn.node.on(cc.Node.EventType.TOUCH_START, function(e) {}),
                 e.leftBtn.node.on(cc.Node.EventType.TOUCH_END, function(e) {
