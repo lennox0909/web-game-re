@@ -141,7 +141,7 @@ window.__require = function e(t, n, o) {
                     n.position,
                     n.points);
                     if ("Car" === e.node.group && 1 == this.Car.type) {
-                        console.log("\u649e\u8f66\u4e86"),
+                        console.log("撞車了"),
                         this.Car.over = !0,
                         this.node.stopAllActions(),
                         this.currentline && this.currentline.stopAllActions(),
@@ -365,7 +365,7 @@ window.__require = function e(t, n, o) {
                     n.points;
                     if (console.log("on collision enter"),
                     "Car" === e.node.group && (i.default.Instance.gameOverStart || 1 == this.type)) {
-                        console.log("\u649e\u8f66\u4e86"),
+                        console.log("撞車了"),
                         this.over = !0,
                         this.initTire(),
                         this.node.stopAllActions(),
@@ -648,151 +648,151 @@ window.__require = function e(t, n, o) {
                 parkPos: [cc.v2(250, 300), cc.v2(-250, 300)],
                 carPos: [cc.v2(-225, -300), cc.v2(225, -300)]
             }, {
-                type: "\u53cc\u8f66X\u578b\u8def\u5f841",
+                type: "雙車X型路徑1",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(225, 300), cc.v2(-250, 300)],
                 carPos: [cc.v2(-225, -300), cc.v2(250, -300)]
             }, {
-                type: "\u53cc\u8f66X\u578b\u8def\u5f842",
+                type: "雙車X型路徑2",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(-250, 300), cc.v2(-225, -300)],
                 carPos: [cc.v2(225, -300), cc.v2(250, 300)]
             }, {
-                type: "\u53cc\u8f66X\u578b\u8def\u5f843",
+                type: "雙車X型路徑3",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(-250, -300), cc.v2(250, -300)],
                 carPos: [cc.v2(225, 300), cc.v2(-225, 300)]
             }, {
-                type: "\u53cc\u8f66X\u578b\u8def\u5f844",
+                type: "雙車X型路徑4",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(250, 300), cc.v2(225, -300)],
                 carPos: [cc.v2(-250, -300), cc.v2(-225, 300)]
             }, {
-                type: "\u53cc\u8f66\u5360\u5751\u578b\u8def\u5f841",
+                type: "雙車佔坑型路徑1",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(250, 300), cc.v2(-250, 300)],
                 carPos: [cc.v2(-225, 300), cc.v2(-250, -300)]
             }, {
-                type: "\u53cc\u8f66\u5360\u5751\u578b\u8def\u5f842",
+                type: "雙車佔坑型路徑2",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(250, 300), cc.v2(-250, 300)],
                 carPos: [cc.v2(-225, 300), cc.v2(250, -300)]
             }, {
-                type: "\u53cc\u8f66\u5360\u5751\u578b\u8def\u5f843",
+                type: "雙車佔坑型路徑3",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(-250, 300), cc.v2(-225, -300)],
                 carPos: [cc.v2(-250, -300), cc.v2(225, -300)]
             }, {
-                type: "\u53cc\u8f66\u5360\u5751\u578b\u8def\u5f844",
+                type: "雙車佔坑型路徑4",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(-250, 300), cc.v2(-225, -300)],
                 carPos: [cc.v2(-250, -300), cc.v2(225, 300)]
             }, {
-                type: "\u53cc\u8f66\u5360\u5751\u578b\u8def\u5f845",
+                type: "雙車佔坑型路徑5",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(-250, -300), cc.v2(250, -300)],
                 carPos: [cc.v2(225, -300), cc.v2(250, 300)]
             }, {
-                type: "\u53cc\u8f66\u5360\u5751\u578b\u8def\u5f846",
+                type: "雙車佔坑型路徑6",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(-250, -300), cc.v2(250, -300)],
                 carPos: [cc.v2(225, -300), cc.v2(-225, 300)]
             }, {
-                type: "\u53cc\u8f66\u5360\u5751\u578b\u8def\u5f847",
+                type: "雙車佔坑型路徑7",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(250, -300), cc.v2(225, 300)],
                 carPos: [cc.v2(250, 300), cc.v2(-225, 300)]
             }, {
-                type: "\u53cc\u8f66\u5360\u5751\u578b\u8def\u5f848",
+                type: "雙車佔坑型路徑8",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(250, -300), cc.v2(225, 300)],
                 carPos: [cc.v2(250, 300), cc.v2(-225, -300)]
             }, {
-                type: "\u53cc\u8f66\u5360\u5751\u578b\u8def\u5f849",
+                type: "雙車佔坑型路徑9",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(250, 300), cc.v2(-250, -300)],
                 carPos: [cc.v2(-225, -300), cc.v2(-250, 300)]
             }, {
-                type: "\u53cc\u8f66\u5360\u5751\u578b\u8def\u5f8410",
+                type: "雙車佔坑型路徑10",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(250, 300), cc.v2(-250, -300)],
                 carPos: [cc.v2(-225, -300), cc.v2(225, -300)]
             }, {
-                type: "\u53cc\u8f66\u5360\u5751\u578b\u8def\u5f8411",
+                type: "雙車佔坑型路徑11",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(-250, 300), cc.v2(250, -300)],
                 carPos: [cc.v2(225, -300), cc.v2(250, 300)]
             }, {
-                type: "\u53cc\u8f66\u5360\u5751\u578b\u8def\u5f8412",
+                type: "雙車佔坑型路徑12",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(-250, 300), cc.v2(250, -300)],
                 carPos: [cc.v2(225, -300), cc.v2(-225, -300)]
             }, {
-                type: "\u53cc\u8f66\u5360\u5751\u578b\u8def\u5f8413",
+                type: "雙車佔坑型路徑13",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(-250, -300), cc.v2(250, 300)],
                 carPos: [cc.v2(225, 300), cc.v2(250, -300)]
             }, {
-                type: "\u53cc\u8f66\u5360\u5751\u578b\u8def\u5f8414",
+                type: "雙車佔坑型路徑14",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(-250, -300), cc.v2(250, 300)],
                 carPos: [cc.v2(225, 300), cc.v2(-225, 300)]
             }, {
-                type: "\u53cc\u8f66\u5360\u5751\u578b\u8def\u5f8415",
+                type: "雙車佔坑型路徑15",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(250, -300), cc.v2(-250, 300)],
                 carPos: [cc.v2(-225, 300), cc.v2(-250, -300)]
             }, {
-                type: "\u53cc\u8f66\u5360\u5751\u578b\u8def\u5f8416",
+                type: "雙車佔坑型路徑16",
                 roadType: 1,
                 parkCount: 2,
                 parkPos: [cc.v2(250, -300), cc.v2(-250, 300)],
                 carPos: [cc.v2(-225, 300), cc.v2(225, 300)]
             }, {
-                type: "\u4e09\u8f66\u5360\u5751\u578b\u8def\u5f841",
+                type: "三車佔坑型路徑1",
                 roadType: 1,
                 parkCount: 3,
                 parkPos: [cc.v2(275, 300), cc.v2(225, -300), cc.v2(-250, -300)],
                 carPos: [cc.v2(-275, -300), cc.v2(-225, 300), cc.v2(250, -300)]
             }, {
-                type: "\u4e09\u8f66\u5360\u5751\u578b\u8def\u5f842",
+                type: "三車佔坑型路徑2",
                 roadType: 1,
                 parkCount: 3,
                 parkPos: [cc.v2(225, -300), cc.v2(-275, 300), cc.v2(250, 300)],
                 carPos: [cc.v2(225, 300), cc.v2(275, -300), cc.v2(-250, -300)]
             }, {
-                type: "\u4e09\u8f66\u5360\u5751\u578b\u8def\u5f843",
+                type: "三車佔坑型路徑3",
                 roadType: 1,
                 parkCount: 3,
                 parkPos: [cc.v2(-225, 300), cc.v2(-250, -300), cc.v2(275, 300)],
                 carPos: [cc.v2(225, -300), cc.v2(250, 300), cc.v2(-275, 300)]
             }, {
-                type: "\u4e09\u8f66\u5360\u5751\u578b\u8def\u5f844",
+                type: "三車佔坑型路徑4",
                 roadType: 1,
                 parkCount: 3,
                 parkPos: [cc.v2(-225, 300), cc.v2(-250, -300), cc.v2(275, 300)],
                 carPos: [cc.v2(225, -300), cc.v2(250, 300), cc.v2(-275, 300)]
             }, {
-                type: "\u56db\u8f66\u8def\u5f84",
+                type: "四車路徑",
                 roadType: 2,
                 parkCount: 4,
                 guidPosX: [-390, -200, 200, 390],
@@ -800,7 +800,7 @@ window.__require = function e(t, n, o) {
                 parkPos: [cc.v2(-280, 400), cc.v2(-130, -400), cc.v2(130, 180), cc.v2(280, 400)],
                 carPos: [cc.v2(-280, -400), cc.v2(-130, 180), cc.v2(130, -400), cc.v2(280, -180)]
             }, {
-                type: "\u4e94\u8f66\u8def\u5f84",
+                type: "五車路徑",
                 roadType: 2,
                 parkCount: 5,
                 guidPosX: [-390, -200, 200, 390],
@@ -808,7 +808,7 @@ window.__require = function e(t, n, o) {
                 parkPos: [cc.v2(-280, 400), cc.v2(-130, -400), cc.v2(130, 180), cc.v2(280, 400), cc.v2(280, 400)],
                 carPos: [cc.v2(-280, -400), cc.v2(-130, 180), cc.v2(130, -400), cc.v2(280, -180), cc.v2(280, 400)]
             }, {
-                type: "\u76f4\u7ebf\u578b",
+                type: "直線型",
                 parkPos: [cc.v2(-280, 400), cc.v2(-280, 400), cc.v2(-280, 400), cc.v2(-280, 400), cc.v2(-280, 400), cc.v2(-280, 400), cc.v2(-130, 400), cc.v2(-130, 400), cc.v2(-130, 400), cc.v2(-130, 400), cc.v2(-130, 400), cc.v2(-130, 400), cc.v2(130, 400), cc.v2(130, 400), cc.v2(130, 400), cc.v2(130, 400), cc.v2(130, 400), cc.v2(130, 400), cc.v2(280, 400), cc.v2(280, 400), cc.v2(280, 400), cc.v2(280, 400), cc.v2(280, 400), cc.v2(280, 400), cc.v2(-280, 180), cc.v2(-280, 180), cc.v2(-280, 180), cc.v2(-280, 180), cc.v2(-280, 180), cc.v2(-280, 180)],
                 carPos: [cc.v2(-280, 180), cc.v2(-280, -180), cc.v2(-280, -400), cc.v2(-130, 400), cc.v2(130, 400), cc.v2(280, 400), cc.v2(-130, 180), cc.v2(-130, -180), cc.v2(-130, -400), cc.v2(-280, 400), cc.v2(130, 400), cc.v2(280, 400), cc.v2(130, 180), cc.v2(130, -180), cc.v2(130, -400), cc.v2(-280, 400), cc.v2(-130, 400), cc.v2(280, 400), cc.v2(280, 280), cc.v2(280, -180), cc.v2(280, -400), cc.v2(-280, 400), cc.v2(-130, 400), cc.v2(130, 400), cc.v2(-280, 400), cc.v2(-280, -180), cc.v2(-280, -400), cc.v2(-130, 400), cc.v2(130, 400), cc.v2(280, 400)]
             }],
@@ -1071,12 +1071,12 @@ window.__require = function e(t, n, o) {
             return ("" + window.navigator.language).toLocaleLowerCase()
         }),
         a(o, "onErrorHandler", function() {
-            cc.log("\u7f51\u7edc\u9519\u8bef"),
+            cc.log("網絡錯誤"),
             this.isBusy = !1,
             this.perform.target ? this.perform.func.call(this.perform.target, -1) : this.perform.func(-1)
         }),
         a(o, "onTimeoutHandler", function() {
-            cc.log("\u8bf7\u6c42\u8d85\u65f6"),
+            cc.log("請求超時"),
             this.isBusy = !1,
             this.perform.target ? this.perform.func.call(this.perform.target, -1) : this.perform.func(-1)
         }),
@@ -1099,28 +1099,28 @@ window.__require = function e(t, n, o) {
         cc._RF.push(t, "4754e8KuPZJCqklCNyKpG29", "LanguageSetJs");
         t.exports = {
             language_1: {
-                game_name: "\u300c\u6309\u5e8f\u505c\u8f66\u300d",
-                game_name1: "\u6309\u5e8f\u505c\u8f66",
-                game_info: "\u6309\u7167\u4e00\u5b9a\u7684\u987a\u5e8f\u70b9\u51fb\u6c7d\u8f66\uff0c\u8ba9\u8f66\u987a\u5229\u5230\u8fbe\u505c\u8f66\u4f4d\u3002",
-                txtStart: "\u5f00\u59cb",
-                txtMore: "\u66f4\u591a\u6e38\u620f",
-                txtAgain: "\u518d\u73a9\u4e00\u6b21",
-                txtShare1: "\u5728\u6e38\u620f\u4e2d ",
-                txtShare2: "\u5f97\u5206\u4e86\uff0c\u597d\u554a!\u4f60\u548c\u6211\u4e00\u8d77\u6765\u6bd4\u8d5b!",
+                game_name: "「按序停車」",
+                game_name1: "按序停車",
+                game_info: "按照一定的順序點擊汽車，讓車順利到達停車位。",
+                txtStart: "開始",
+                txtMore: "更多遊戲",
+                txtAgain: "再玩一次",
+                txtShare1: "在遊戲中 ",
+                txtShare2: "得分了，好啊!你和我一起來比賽!",
                 bgRgb: "#3698C5",
-                gameT1: "\u5173\u6ce8\u6211\u4eec",
-                gameT2: "\u7eb8\u724c\u63a5\u9f99",
-                gameT3: "\u9526\u4e0a\u6dfb\u82b1",
+                gameT1: "關注我們",
+                gameT2: "紙牌接龍",
+                gameT3: "錦上添花",
                 gameUrl1: "http://g.regogame.com/game/9/",
                 gameUrl2: "http://g.regogame.com/game/3/",
-                gameT11: "\u5173\u6ce8\u5fae\u4fe1",
-                gameT12: "\u5173\u6ce8Kakao",
-                gameT13: "\u5173\u6ce8Line",
-                gameEndL: "\u6e38 \u620f \u7ed3 \u675f",
-                gameEndL1: "\u7a0d \u5019 \u67e5 \u770b \u5206 \u6570"
+                gameT11: "關注微信",
+                gameT12: "關注Kakao",
+                gameT13: "關注Line",
+                gameEndL: "游 戲 結 束",
+                gameEndL1: "稍 候 查 看 分 數"
             },
             language_2: {
-                game_name: "\u300cOrder Parking\u300d",
+                game_name: "「Order Parking」",
                 game_name1: "Order Parking",
                 game_info: "Click the cars in a certain order to let the cars reach the parking space smoothly.",
                 txtStart: "Start",
@@ -1881,7 +1881,7 @@ window.__require = function e(t, n, o) {
                 if (0 == this.overPutLineNum ? v = 0 : 1 == this.overPutLineNum ? v = -20 : 2 == this.overPutLineNum ? v = -40 : 3 == this.overPutLineNum ? v = 20 : 4 == this.overPutLineNum && (v = 40),
                 e.x == t.x) {
                     if (e.y == t.y)
-                        return void cc.log("Error:\u8f66\u4e0e\u505c\u8f66\u4f4d\u5750\u6807\u76f8\u540c");
+                        return void cc.log("Error:車與停車位坐標相同");
                     if (e.y > t.y) {
                         var y = e.y - e.height * e.scaleY / 2 - 0 - (t.y + t.height * t.scaleY / 2 + 0);
                         l = 1,
@@ -2684,7 +2684,7 @@ window.__require = function e(t, n, o) {
             ,
             t.Despawn = function(e, t) {
                 if (!n.Instance.poolMap.has(e))
-                    return cc.log("\u56de\u6536\u5931\u8d25,\u8282\u70b9\u540d : " + e),
+                    return cc.log("回收失敗,節點名 : " + e),
                     null;
                 n.Instance.poolMap.get(e).put(t)
             }
@@ -3127,7 +3127,7 @@ window.__require = function e(t, n, o) {
             loadJson: function(e, t) {},
             writeJson: function(e, t) {
                 if (cc.sys.isBrowser) {
-                    console.log("\u6d4f\u89c8\u5668");
+                    console.log("瀏覽器");
                     var n = new Blob([e],{
                         type: "application/json"
                     })
@@ -3165,7 +3165,7 @@ window.__require = function e(t, n, o) {
                     null != n && (c.position = n),
                     c
                 }
-                return console.log("\u514b\u9686\u9884\u5236\u4f53\u5931\u8d25:" + e),
+                return console.log("克隆預製體失敗:" + e),
                 null
             },
             newLabel: function(e, t) {
@@ -3196,7 +3196,7 @@ window.__require = function e(t, n, o) {
                     t = this.AudioArrJs.getAudioClip(e);
                 else {
                     if (null == e)
-                        return console.log("clip\u4e0d\u80fd\u4e3a\u7a7a\uff01"),
+                        return console.log("clip不能為空！"),
                         null;
                     t = e
                 }
@@ -3288,13 +3288,13 @@ window.__require = function e(t, n, o) {
                 this.game_max_score = 1e6,
                 this.over = !1,
                 this.ads2Open = !0,
-                this.gameOverInfo1StringArr = ["\u6e38  \u620f  \u7ed3  \u675f", "\u904a  \u6232  \u7d50  \u675f", "Game Over", "\uac8c\uc784 \ub05d"],
-                this.gameOverInfo2StringArr = ["\u70b9 \u51fb \u67e5 \u770b \u5206 \u6570", "\u9ede \u64ca \u67e5 \u770b \u5206 \u6578", "Click to view points", "\ud3ec\uc778\ud2b8\ub97c \ubcf4\ub824\uba74 \ud074\ub9ad\ud558\uc138\uc694"],
-                this.gameSuccessTitleStringArr = ["\u606d \u559c \u4f60 \u5df2 \u7a81 \u7834", "\u606d \u559c \u4f60 \u5df2 \u7a81 \u7834", "Level Up", "\ub808\ubca8 \uc5c5"],
-                this.gameSuccessUintStringArr = ["\u5206", "\u5206", "P", "\ubd84"],
-                this.continueStringArr = ["\u70b9\u51fb\u7ee7\u7eed", "\u9ede\u64ca\u7e7c\u7e8c", "Click to continue", "\uacc4\uc18d\ud558\ub824\uba74 \ud074\ub9ad\ud558\uc138\uc694"],
-                this.moreGameStringArr = ["\u66f4\u591a\u6e38\u620f", "\u66f4\u591a\u904a\u6232", "More Game", "\ub354 \ub9ce\uc740 \uac8c\uc784"],
-                this.maxScoreStringArr = ["\u6700\u9ad8\u5f97\u5206\uff1a", "\u6700\u9ad8\u5f97\u5206\uff1a", "Highest score:", "\ucd5c\uace0 \uc810\uc218 :"],
+                this.gameOverInfo1StringArr = ["游  戲  結  束", "遊  戲  結  束", "Game Over", "게임 끝"],
+                this.gameOverInfo2StringArr = ["點 擊 查 看 分 數", "點 擊 查 看 分 數", "Click to view points", "포인트를 보려면 클릭하세요"],
+                this.gameSuccessTitleStringArr = ["恭 喜 你 已 突 破", "恭 喜 你 已 突 破", "Level Up", "레벨 업"],
+                this.gameSuccessUintStringArr = ["分", "分", "P", "분"],
+                this.continueStringArr = ["點擊繼續", "點擊繼續", "Click to continue", "계속하려면 클릭하세요"],
+                this.moreGameStringArr = ["更多遊戲", "更多遊戲", "More Game", "더 많은 게임"],
+                this.maxScoreStringArr = ["最高得分：", "最高得分：", "Highest score:", "최고 점수 :"],
                 this.langNumType = this.returnCurrentLanType(),
                 this.continue.getComponent(cc.Label).string = this.continueStringArr[this.langNumType - 1],
                 this.gameOverInfo.getChildByName("gameOverInfo1").getComponent(cc.Label).string = this.gameOverInfo1StringArr[this.langNumType - 1],
@@ -3490,7 +3490,7 @@ window.__require = function e(t, n, o) {
                 e.gameOverPanel.on(cc.Node.EventType.TOUCH_START, function(e) {}),
                 e.gameOverPanel.on(cc.Node.EventType.TOUCH_END, function(t) {
                     e.canNotTouch || (e.canNotTouch = !0,
-                    console.log("\u8bed\u8a00\u73af\u5883" + e.langNumType),
+                    console.log("語言環境" + e.langNumType),
                     c.publicGameBool || adBreak({
                         type: "next",
                         name: "restart-game"
@@ -3547,28 +3547,28 @@ window.__require = function e(t, n, o) {
                         return n ? a : o;
             },
             getContentByScore2: function(e, t, n) {
-                var o = "I'm awesome\uff0cin" + t + "get 0 score\uff0conly one person in the world has a 0\uff01"
+                var o = "I'm awesome，in" + t + "get 0 score，only one person in the world has a 0！"
                   , a = "Only 0 points, the only one in the world!"
                   , c = parseInt(.6 * this.standardScore)
                   , r = parseInt(1.5 * this.standardScore)
                   , i = parseInt(2.5 * this.standardScore)
                   , s = parseInt(4 * this.standardScore);
                 if (e >= 0 && e <= c)
-                    o = "I got " + e + " points in the game, really great\uff01",
+                    o = "I got " + e + " points in the game, really great！",
                     a = "Defeated " + Math.floor(10 * e / c) + "% of players worldwide!";
                 else if (e > c && e <= this.standardScore) {
-                    o = "I got " + e + " points in the game, really great\uff01",
+                    o = "I got " + e + " points in the game, really great！",
                     a = "Defeated " + (Math.floor(15 * (e - this.standardScore) / (c - this.standardScore)) + 20) + "% of players worldwide!"
                 } else if (e > this.standardScore && e <= r) {
                     var h = Math.floor(20 * (e - this.standardScore) / (r - this.standardScore)) + 35;
-                    o = "I got in the game in " + e + " points, beating out " + h + "% of global players\uff01",
+                    o = "I got in the game in " + e + " points, beating out " + h + "% of global players！",
                     a = "Defeated " + h + "% of players worldwide!"
                 } else if (e > r && e <= i) {
                     var l = Math.floor(30 * (e - r) / (i - r)) + 55;
-                    o = "I got in the game in " + e + " points, beating out " + l + "% of global players\uff01",
+                    o = "I got in the game in " + e + " points, beating out " + l + "% of global players！",
                     a = "Defeated " + l + "% of players worldwide!"
                 } else if (e > i && e <= s) {
-                    o = "I got in the game in " + e + " points, beating out 99% of global players\uff01",
+                    o = "I got in the game in " + e + " points, beating out 99% of global players！",
                     a = "Defeated " + (Math.floor(10 * (e - i) / (s - i)) + 85) + "% of players worldwide!"
                 } else if (e > s && e < this.game_max_score) {
                     o = "I got " + e + " points in the game, it said to be the world's only " + (20 - Math.ceil(17 * (e - s) / (this.game_max_score - s))) + " people to reach this level! Have you?",
@@ -3579,68 +3579,88 @@ window.__require = function e(t, n, o) {
                 return n ? a : o
             },
             getContentByScore3: function(e, t, n) {
-                var o = "\u6211\u771f\u662f\u592a\u5389\u5bb3\uff0c\u5728" + t + "\u4e2d\u7adf\u7136\u5f97\u4e860\u5206\uff0c\u5168\u7403\u53ea\u67091\u4e2a\u4eba\u5f970\u5206\uff01"
-                  , a = "\u64ca\u6557\u4e86\u5168\u74030%\u7684\u73a9\u5bb6\uff01"
-                  , c = parseInt(.6 * this.standardScore)
-                  , r = parseInt(1.5 * this.standardScore)
-                  , i = parseInt(2.5 * this.standardScore)
-                  , s = parseInt(4 * this.standardScore);
-                if (e >= 0 && e <= c)
-                    o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u771f\u662f\u592a\u68d2\u4e86\uff0c\u518d\u7ec3\u7ec3\u5c31\u80fd\u5f97\u5fc3\u5e94\u624b!",
-                    a = "\u64ca\u6557\u4e86\u5168\u7403" + Math.floor(10 * e / c) + "%\u7684\u73a9\u5bb6\uff01";
-                else if (e > c && e <= this.standardScore) {
-                    o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u771f\u662f\u592a\u68d2\u4e86\uff0c\u518d\u7ec3\u7ec3\u5c31\u80fd\u8fbe\u5230\u6e38\u5203\u6709\u4f59\u7684\u5883\u754c\uff01",
-                    a = "\u64ca\u6557\u4e86\u5168\u7403" + (Math.floor(15 * (e - this.standardScore) / (c - this.standardScore)) + 20) + "%\u7684\u73a9\u5bb6\uff01"
-                } else if (e > this.standardScore && e <= r) {
+                var c = parseInt(0.6 * this.standardScore),
+                    r = parseInt(1.5 * this.standardScore),
+                    i = parseInt(2.5 * this.standardScore),
+                    s = parseInt(4 * this.standardScore);
+                
+                var o = "", a = ""; // o: 完整分享文案, a: 簡短擊敗比例
+
+                if (e <= 0) {
+                    o = "我真是太厲害了，在" + t + "中竟然得了0分，全球只有1個人得0分！";
+                    a = "擊敗了全球0%的玩家！";
+                } else if (e <= c) {
+                    o = "我在" + t + "中得了" + e + "分，真是太棒了，再練練就能得心應手！";
+                    a = "擊敗了全球" + Math.floor(10 * e / c) + "%的玩家！";
+                } else if (e <= this.standardScore) {
+                    o = "我在" + t + "中得了" + e + "分，真是太棒了，再練練就能達到游刃有餘的境界！";
+                    a = "擊敗了全球" + (Math.floor(15 * (e - this.standardScore) / (c - this.standardScore)) + 20) + "%的玩家！";
+                } else if (e <= r) {
                     var h = Math.floor(20 * (e - this.standardScore) / (r - this.standardScore)) + 35;
-                    o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u51fb\u8d25\u4e86\u5168\u7403" + h + "%\u7684\u73a9\u5bb6\uff0c\u8fdb\u5165\u4e86\u4fe1\u624b\u62c8\u6765\u7684\u5883\u754c\uff01",
-                    a = "\u64ca\u6557\u4e86\u5168\u7403" + h + "%\u7684\u73a9\u5bb6\uff01"
-                } else if (e > r && e <= i) {
+                    o = "我在" + t + "中得了" + e + "分，擊敗了全球" + h + "%的玩家，進入了信手拈來的境界！";
+                    a = "擊敗了全球" + h + "%的玩家！";
+                } else if (e <= i) {
                     var l = Math.floor(30 * (e - r) / (i - r)) + 55;
-                    o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u51fb\u8d25\u4e86\u5168\u7403" + l + "%\u7684\u73a9\u5bb6\uff0c\u8fdb\u5165\u4e86\u8fd0\u7528\u81ea\u5982\u7684\u5883\u754c\uff01",
-                    a = "\u64ca\u6557\u4e86\u5168\u7403" + l + "%\u7684\u73a9\u5bb6\uff01"
-                } else if (e > i && e <= s) {
-                    o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u51fb\u8d25\u4e86\u5168\u740399%\u7684\u73a9\u5bb6\uff0c\u8fbe\u5230\u4e86\u884c\u4e91\u6d41\u6c34\u7684\u5883\u754c\uff01",
-                    a = "\u64ca\u6557\u4e86\u5168\u7403" + (Math.floor(10 * (e - i) / (s - i)) + 85) + "%\u7684\u73a9\u5bb6\uff01"
-                } else if (e > s && e < this.game_max_score) {
-                    o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u636e\u8bf4\u5168\u7403\u53ea\u6709 " + (20 - Math.ceil(17 * (e - s) / (this.game_max_score - s))) + "\u4e2a\u4eba\u8fbe\u5230\u8fd9\u4e2a\u6c34\u5e73\uff0c\u72ec\u5b64\u6c42\u8d25\uff01",
-                    a = "\u64ca\u6557\u4e86\u5168\u740399%\u7684\u73a9\u5bb6\uff01"
-                } else
-                    e >= this.game_max_score && (o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u8d85\u8d8a\u4e86\u72ec\u5b64\u6c42\u8d25\uff0c\u5fc3\u6709\u7075\u7280\uff01",
-                    a = "\u64ca\u6557\u4e86\u5168\u7403100%\u7684\u73a9\u5bb6\uff01");
-                return n ? a : o
+                    o = "我在" + t + "中得了" + e + "分，擊敗了全球" + l + "%的玩家，進入了運用自如的境界！";
+                    a = "擊敗了全球" + l + "%的玩家！";
+                } else if (e <= s) {
+                    var m = Math.floor(10 * (e - i) / (s - i)) + 85;
+                    o = "我在" + t + "中得了" + e + "分，擊敗了全球99%的玩家，達到了行雲流水的境界！";
+                    a = "擊敗了全球" + m + "%的玩家！";
+                } else if (e < this.game_max_score) {
+                    var count = 20 - Math.ceil(17 * (e - s) / (this.game_max_score - s));
+                    count = Math.max(1, count); // 防呆：避免出現 0 或負數
+                    o = "我在" + t + "中得了" + e + "分，據說全球只有 " + count + " 個人達到這個水平，獨孤求敗！";
+                    a = "擊敗了全球99%的玩家！";
+                } else {
+                    o = "我在" + t + "中得了" + e + "分，超越了獨孤求敗，心有靈犀！";
+                    a = "擊敗了全球100%的玩家！";
+                }
+                
+                // 根據參數 n 決定回傳短版比例(a)還是長版文案(o)
+                return n ? a : o;
             },
+            
             getContentByScore4: function(e, t, n) {
-                var o = "\u6211\u771f\u662f\u592a\u5389\u5bb3\uff0c\u5728" + t + "\u4e2d\u7adf\u7136\u5f97\u4e860\u5206\uff0c\u5168\u7403\u53ea\u67091\u4e2a\u4eba\u5f970\u5206\uff01"
-                  , a = "\uc804 \uc138\uacc4 \ud50c\ub808\uc774\uc5b4 0%\ub97c \ubb3c\ub9ac \ucce4\uc2b5\ub2c8\ub2e4!"
-                  , c = parseInt(.6 * this.standardScore)
-                  , r = parseInt(1.5 * this.standardScore)
-                  , i = parseInt(2.5 * this.standardScore)
-                  , s = parseInt(4 * this.standardScore);
-                if (e >= 0 && e <= c)
-                    o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u771f\u662f\u592a\u68d2\u4e86\uff0c\u518d\u7ec3\u7ec3\u5c31\u80fd\u5f97\u5fc3\u5e94\u624b!",
-                    a = "\uc804 \uc138\uacc4 \ud50c\ub808\uc774\uc5b4 " + Math.floor(10 * e / c) + "%\ub97c \ubb3c\ub9ac \ucce4\uc2b5\ub2c8\ub2e4!";
-                else if (e > c && e <= this.standardScore) {
-                    o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u771f\u662f\u592a\u68d2\u4e86\uff0c\u518d\u7ec3\u7ec3\u5c31\u80fd\u8fbe\u5230\u6e38\u5203\u6709\u4f59\u7684\u5883\u754c\uff01",
-                    a = "\uc804 \uc138\uacc4 \ud50c\ub808\uc774\uc5b4 " + (Math.floor(15 * (e - this.standardScore) / (c - this.standardScore)) + 20) + "%\ub97c \ubb3c\ub9ac \ucce4\uc2b5\ub2c8\ub2e4!"
-                } else if (e > this.standardScore && e <= r) {
+                var c = parseInt(0.6 * this.standardScore),
+                    r = parseInt(1.5 * this.standardScore),
+                    i = parseInt(2.5 * this.standardScore),
+                    s = parseInt(4 * this.standardScore);
+                
+                var o = "", a = ""; 
+
+                if (e <= 0) {
+                    o = "我真是太厲害了，在" + t + "中竟然得了0分，全球只有1個人得0分！";
+                    a = "전 세계 플레이어 0%를 물리 쳤습니다!"; // 擊敗了全球0%的玩家！
+                } else if (e <= c) {
+                    o = "我在" + t + "中得了" + e + "分，真是太棒了，再練練就能得心應手！";
+                    a = "전 세계 플레이어 " + Math.floor(10 * e / c) + "%를 물리 쳤습니다!";
+                } else if (e <= this.standardScore) {
+                    o = "我在" + t + "中得了" + e + "分，真是太棒了，再練練就能達到游刃有餘的境界！";
+                    a = "전 세계 플레이어 " + (Math.floor(15 * (e - this.standardScore) / (c - this.standardScore)) + 20) + "%를 물리 쳤습니다!";
+                } else if (e <= r) {
                     var h = Math.floor(20 * (e - this.standardScore) / (r - this.standardScore)) + 35;
-                    o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u51fb\u8d25\u4e86\u5168\u7403" + h + "%\u7684\u73a9\u5bb6\uff0c\u8fdb\u5165\u4e86\u4fe1\u624b\u62c8\u6765\u7684\u5883\u754c\uff01",
-                    a = "\uc804 \uc138\uacc4 \ud50c\ub808\uc774\uc5b4 " + h + "%\ub97c \ubb3c\ub9ac \ucce4\uc2b5\ub2c8\ub2e4!"
-                } else if (e > r && e <= i) {
+                    o = "我在" + t + "中得了" + e + "分，擊敗了全球" + h + "%的玩家，進入了信手拈來的境界！";
+                    a = "전 세계 플레이어 " + h + "%를 물리 쳤습니다!";
+                } else if (e <= i) {
                     var l = Math.floor(30 * (e - r) / (i - r)) + 55;
-                    o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u51fb\u8d25\u4e86\u5168\u7403" + l + "%\u7684\u73a9\u5bb6\uff0c\u8fdb\u5165\u4e86\u8fd0\u7528\u81ea\u5982\u7684\u5883\u754c\uff01",
-                    a = "\uc804 \uc138\uacc4 \ud50c\ub808\uc774\uc5b4 " + l + "%\ub97c \ubb3c\ub9ac \ucce4\uc2b5\ub2c8\ub2e4!"
-                } else if (e > i && e <= s) {
-                    o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u51fb\u8d25\u4e86\u5168\u740399%\u7684\u73a9\u5bb6\uff0c\u8fbe\u5230\u4e86\u884c\u4e91\u6d41\u6c34\u7684\u5883\u754c\uff01",
-                    a = "\uc804 \uc138\uacc4 \ud50c\ub808\uc774\uc5b4 " + (Math.floor(10 * (e - i) / (s - i)) + 85) + "%\ub97c \ubb3c\ub9ac \ucce4\uc2b5\ub2c8\ub2e4!"
-                } else if (e > s && e < this.game_max_score) {
-                    o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u636e\u8bf4\u5168\u7403\u53ea\u6709 " + (20 - Math.ceil(17 * (e - s) / (this.game_max_score - s))) + "\u4e2a\u4eba\u8fbe\u5230\u8fd9\u4e2a\u6c34\u5e73\uff0c\u72ec\u5b64\u6c42\u8d25\uff01",
-                    a = "\uc804 \uc138\uacc4 \ud50c\ub808\uc774\uc5b4 99%\ub97c \ubb3c\ub9ac \ucce4\uc2b5\ub2c8\ub2e4!"
-                } else
-                    e >= this.game_max_score && (o = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u8d85\u8d8a\u4e86\u72ec\u5b64\u6c42\u8d25\uff0c\u5fc3\u6709\u7075\u7280\uff01",
-                    a = "\uc804 \uc138\uacc4 \ud50c\ub808\uc774\uc5b4 100%\ub97c \ubb3c\ub9ac \ucce4\uc2b5\ub2c8\ub2e4!");
-                return n ? a : o
+                    o = "我在" + t + "中得了" + e + "分，擊敗了全球" + l + "%的玩家，進入了運用自如的境界！";
+                    a = "전 세계 플레이어 " + l + "%를 물리 쳤습니다!";
+                } else if (e <= s) {
+                    var m = Math.floor(10 * (e - i) / (s - i)) + 85;
+                    o = "我在" + t + "中得了" + e + "分，擊敗了全球99%的玩家，達到了行雲流水的境界！";
+                    a = "전 세계 플레이어 " + m + "%를 물리 쳤습니다!";
+                } else if (e < this.game_max_score) {
+                    var count = 20 - Math.ceil(17 * (e - s) / (this.game_max_score - s));
+                    count = Math.max(1, count);
+                    o = "我在" + t + "中得了" + e + "分，據說全球只有 " + count + " 個人達到這個水平，獨孤求敗！";
+                    a = "전 세계 플레이어 99%를 물리 쳤습니다!";
+                } else {
+                    o = "我在" + t + "中得了" + e + "分，超越了獨孤求敗，心有靈犀！";
+                    a = "전 세계 플레이어 100%를 물리 쳤습니다!";
+                }
+                
+                return n ? a : o;
             },
             update: function(e) {}
         }),
@@ -3675,23 +3695,24 @@ window.__require = function e(t, n, o) {
                 rightBtnText: cc.Label,
                 maxScoreText: cc.Label
             },
-            onLoad: function() {
+            onLoad: function () {
                 this.bgLayer.color = cc.color("#68b951"),
-                this.standardScore = a.standScore,
-                this.game_max_score = 200,
-                this.rigthBtnGameName = null,
-                this.rightBtnGameUrl = null,
-                this.UIPosChange(),
-                this.addClickBtns();
-                var e = "\u6700\u9ad8\u7eaa\u5f55:"
-                  , t = this.returnCurrentLanType();
-                e = 1 == t ? "\u6700\u9ad8\u7eaa\u5f55:" : 2 == t ? "\u6700\u9ad8\u7d00\u9304:" : 4 == t ? "\ucd5c\uace0 \uae30\ub85d:" : "Highest Record:";
+                    this.standardScore = a.standScore,
+                    this.game_max_score = 200, // 註：這裡原本的最高關卡數被改回 200 了，若需要百萬關卡請改回 1e6
+                    this.rigthBtnGameName = null,
+                    this.rightBtnGameUrl = null,
+                    this.UIPosChange(),
+                    this.addClickBtns();
+
+                // 移除多國語言判斷，直接強制設定為繁體中文
+                var e = "最高紀錄：";
+
                 var n = a.gameScore
-                  , o = this.getHighScore();
+                    , o = this.getHighScore();
                 o ? o < a.gameScore && (this.setHisSocre(a.gameScore),
-                o = a.gameScore) : (this.setHisSocre(a.gameScore),
-                o = n),
-                this.maxScoreText.string = e + o
+                    o = a.gameScore) : (this.setHisSocre(a.gameScore),
+                        o = n),
+                    this.maxScoreText.string = e + o
             },
             returnCurrentLanType: function() {
                 return 2;
@@ -3758,26 +3779,30 @@ window.__require = function e(t, n, o) {
                 })
             },
             getContentByScore: function(e, t) {
-                var n = "\u6211\u771f\u662f\u592a\u5389\u5bb3\uff0c\u5728" + t + "\u4e2d\u7adf\u7136\u5f97\u4e861\u5206\uff0c\u5168\u7403\u53ea\u67091\u4e2a\u4eba\u5f971\u5206\uff01"
-                  , o = parseInt(.3 * this.standardScore)
-                  , a = parseInt(1.5 * this.standardScore)
-                  , c = parseInt(2.5 * this.standardScore)
-                  , r = parseInt(4 * this.standardScore);
-                if (e > 0 && e <= o)
-                    n = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u771f\u662f\u592a\u68d2\u4e86\uff0c\u518d\u7ec3\u7ec3\u5c31\u80fd\u8fbe\u5230\u6e38\u5203\u6709\u4f59\u7684\u5883\u754c\uff01";
-                else if (e > o && e <= this.standardScore)
-                    n = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u771f\u662f\u592a\u68d2\u4e86\uff0c\u518d\u7ec3\u7ec3\u5c31\u80fd\u8fbe\u5230\u6e38\u5203\u6709\u4f59\u7684\u5883\u754c\uff01";
-                else if (e > this.standardScore && e <= a) {
-                    n = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u51fb\u8d25\u4e86\u5168\u7403" + (Math.floor(12 * (e - this.standardScore) / (a - this.standardScore)) + 80) + "%\u7684\u73a9\u5bb6\uff0c\u8fdb\u5165\u4e86\u4fe1\u624b\u62c8\u6765\u7684\u5883\u754c\uff01"
-                } else if (e > a && e <= c) {
-                    n = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u51fb\u8d25\u4e86\u5168\u7403" + (Math.floor(7 * (e - a) / (c - a)) + 92) + "%\u7684\u73a9\u5bb6\uff0c\u8fdb\u5165\u4e86\u8fd0\u7528\u81ea\u5982\u7684\u5883\u754c\uff01"
-                } else if (e > c && e <= r)
-                    n = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u51fb\u8d25\u4e86\u5168\u740399%\u7684\u73a9\u5bb6\uff0c\u8fbe\u5230\u4e86\u884c\u4e91\u6d41\u6c34\u7684\u5883\u754c\uff01";
-                else if (e > r && e < this.game_max_score) {
-                    n = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u636e\u8bf4\u5168\u7403\u53ea\u6709 " + (20 - Math.ceil(17 * (e - r) / (this.game_max_score - r))) + "\u4e2a\u4eba\u8fbe\u5230\u8fd9\u4e2a\u6c34\u5e73\uff0c\u72ec\u5b64\u6c42\u8d25\uff01"
-                } else
-                    e >= this.game_max_score && (n = "\u6211\u5728" + t + "\u4e2d\u5f97\u4e86" + e + "\u5206\uff0c\u8d85\u8d8a\u4e86\u72ec\u5b64\u6c42\u8d25\uff0c\u5fc3\u6709\u7075\u7280\uff01");
-                return n
+                var a = parseInt(1.5 * this.standardScore),
+                    c = parseInt(2.5 * this.standardScore),
+                    r = parseInt(4 * this.standardScore);
+
+                if (e <= 0) {
+                    return "我真是太厲害了，在" + t + "中竟然得了1分，全球只有1個人得1分！";
+                } else if (e <= this.standardScore) {
+                    // 合併了原本前兩個重複的文案判斷
+                    return "我在" + t + "中得了" + e + "分，真是太棒了，再練練就能達到游刃有餘的境界！";
+                } else if (e <= a) {
+                    var pct1 = Math.floor(12 * (e - this.standardScore) / (a - this.standardScore)) + 80;
+                    return "我在" + t + "中得了" + e + "分，擊敗了全球" + pct1 + "%的玩家，進入了信手拈來的境界！";
+                } else if (e <= c) {
+                    var pct2 = Math.floor(7 * (e - a) / (c - a)) + 92;
+                    return "我在" + t + "中得了" + e + "分，擊敗了全球" + pct2 + "%的玩家，進入了運用自如的境界！";
+                } else if (e <= r) {
+                    return "我在" + t + "中得了" + e + "分，擊敗了全球99%的玩家，達到了行雲流水的境界！";
+                } else if (e < this.game_max_score) {
+                    var count = 20 - Math.ceil(17 * (e - r) / (this.game_max_score - r));
+                    count = Math.max(1, count); // 防止極端高分時出現 0 或負數的人數
+                    return "我在" + t + "中得了" + e + "分，據說全球只有 " + count + " 個人達到這個水平，獨孤求敗！";
+                } else {
+                    return "我在" + t + "中得了" + e + "分，超越了獨孤求敗，心有靈犀！";
+                }
             },
             strlen: function(e) {
                 for (var t = 0, n = 0; n < e.length; n++) {
@@ -3787,7 +3812,7 @@ window.__require = function e(t, n, o) {
                 return t
             },
             getContentByScore2: function(e, t) {
-                var n = "I'm awesome\uff0cin" + t + "get 0 score\uff0conly one person in the world has a 0\uff01"
+                var n = "I'm awesome，in" + t + "get 0 score，only one person in the world has a 0！"
                   , o = parseInt(.3 * this.standardScore)
                   , a = parseInt(1.5 * this.standardScore)
                   , c = parseInt(2.5 * this.standardScore)
@@ -3795,15 +3820,15 @@ window.__require = function e(t, n, o) {
                 if (e >= this.game_max_score)
                     n = "I got " + e + " points in the game, defeating all players worldwide, waiting for you to fight!";
                 else if (e > 0 && e <= o)
-                    n = "I got " + e + " points in the game, really great\uff01";
+                    n = "I got " + e + " points in the game, really great！";
                 else if (e > o && e <= this.standardScore)
-                    n = "I got " + e + " points in the game, really great\uff01";
+                    n = "I got " + e + " points in the game, really great！";
                 else if (e > this.standardScore && e <= a) {
-                    n = "I got in the game in " + e + " points, beating out " + (Math.floor(12 * (e - this.standardScore) / (a - this.standardScore)) + 80) + "% of global players\uff01"
+                    n = "I got in the game in " + e + " points, beating out " + (Math.floor(12 * (e - this.standardScore) / (a - this.standardScore)) + 80) + "% of global players！"
                 } else if (e > a && e <= c) {
-                    n = "I got in the game in " + e + " points, beating out " + (Math.floor(7 * (e - a) / (c - a)) + 92) + "% of global players\uff01"
+                    n = "I got in the game in " + e + " points, beating out " + (Math.floor(7 * (e - a) / (c - a)) + 92) + "% of global players！"
                 } else if (e > c && e <= r)
-                    n = "I got in the game in " + e + " points, beating out 99% of global players\uff01";
+                    n = "I got in the game in " + e + " points, beating out 99% of global players！";
                 else if (e > r && e < this.game_max_score) {
                     n = "I got " + e + " points in the game, it said to be the world's only " + (20 - Math.ceil(17 * (e - r) / (this.game_max_score - r))) + " people to reach this level! Have you?"
                 }
@@ -3924,7 +3949,7 @@ window.__require = function e(t, n, o) {
     }],
     resArr: [function(e, t, n) {
         "use strict";
-        cc._RF.push(t, "36b14EoJxtHtJEeP2jXVvPf", "resArr"),
+        cc._RF.push(t, "36b14EoJxtHtJEeP2jXVvPf", "resArr");
         cc.Class({
             extends: cc.Component,
             properties: {
@@ -3936,51 +3961,69 @@ window.__require = function e(t, n, o) {
                 }
             },
             onLoad: function() {
-                void 0 != ToolsJs && (ToolsJs.PrefabArrJs = this,
-                ToolsJs.SpriteFrameJs = this,
-                ToolsJs.AudioArrJs = this),
-                this.addPrefabs(),
-                this.addSpriteFrame(),
-                this.audioClipDic = {};
-                for (var e = 0; e < this.audiosArr.length; e++) {
-                    var t = this.audiosArr[e];
-                    this.audioClipDic[t.name] = t
+                // 綁定全域腳本參考
+                if (typeof ToolsJs !== "undefined") {
+                    ToolsJs.PrefabArrJs = this;
+                    ToolsJs.SpriteFrameJs = this;
+                    ToolsJs.AudioArrJs = this;
                 }
+                
+                this.addPrefabs();
+                this.addSpriteFrame();
+                
+                // 初始化音效字典
+                this.audioClipDic = {};
+                this.audiosArr.forEach(function(audio) {
+                    if (audio) this.audioClipDic[audio.name] = audio;
+                }, this);
             },
-            playAudio: function(e) {
-                var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : .3
-                  , n = arguments.length > 2 && void 0 !== arguments[2] && arguments[2];
-                return null != this.audioClipDic[e] ? cc.audioEngine.play(this.audioClipDic[e], n, t) : (console.log("\u6ca1\u6709\u627e\u5230\u97f3\u9891\uff1a" + e),
-                null)
+            
+            // 播放音效 (預設音量 0.3，不循環)
+            playAudio: function(name, volume, loop) {
+                var vol = volume !== undefined ? volume : 0.3;
+                var isLoop = loop !== undefined ? loop : false;
+                var clip = this.audioClipDic[name];
+                
+                if (clip) {
+                    return cc.audioEngine.play(clip, isLoop, vol);
+                }
+                console.log("沒有找到音效：" + name);
+                return null;
             },
-            getAudioClip: function(e) {
-                return null != this.audioClipDic[e] ? this.audioClipDic[e] : (console.log("\u6ca1\u6709\u627e\u5230\u97f3\u9891\uff1a" + e),
-                null)
+            
+            getAudioClip: function(name) {
+                var clip = this.audioClipDic[name];
+                if (!clip) console.log("沒有找到音效：" + name);
+                return clip || null;
             },
+            
             addSpriteFrame: function() {
                 this.spriteArr = {};
-                for (var e = 0; e < this.SpriteFrameArr.length; e++) {
-                    var t = this.SpriteFrameArr[e];
-                    null != t && (this.spriteArr[t.name] = t)
-                }
+                this.SpriteFrameArr.forEach(function(sprite) {
+                    if (sprite) this.spriteArr[sprite.name] = sprite;
+                }, this);
             },
-            getSpriteFrame: function(e) {
-                return null != this.spriteArr[e] ? this.spriteArr[e] : (console.log("\u6ca1\u6709\u6dfb\u52a0\u56fe\u7247\uff1a" + e),
-                null)
+            
+            getSpriteFrame: function(name) {
+                var sprite = this.spriteArr[name];
+                if (!sprite) console.log("沒有添加圖片：" + name);
+                return sprite || null;
             },
+            
             addPrefabs: function() {
                 this.prefabsArr = {};
-                for (var e = 0; e < this.PrefabArr.length; e++) {
-                    var t = this.PrefabArr[e];
-                    this.prefabsArr[t.name] = t
-                }
+                this.PrefabArr.forEach(function(prefab) {
+                    if (prefab) this.prefabsArr[prefab.name] = prefab;
+                }, this);
             },
-            getPrefabs: function(e) {
-                return null != this.prefabsArr[e] ? this.prefabsArr[e] : (console.log("\u6ca1\u6709\u9884\u5236\u4f53\uff1a" + e),
-                null)
+            
+            getPrefabs: function(name) {
+                var prefab = this.prefabsArr[name];
+                if (!prefab) console.log("沒有預製體：" + name);
+                return prefab || null;
             }
-        }),
-        cc._RF.pop()
+        });
+        cc._RF.pop();
     }
     , {}],
     startGameJs: [function(e, t, n) {
