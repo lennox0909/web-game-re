@@ -35,7 +35,7 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Remove unwanted files
         run: |
-        rm -rf experiment/
+          rm -rf experiment/
         # rm -f level_editor.html
         # 如果有資料夾要排除，可以使用 rm -rf folder_name/
 
