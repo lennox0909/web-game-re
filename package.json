@@ -1,0 +1,32 @@
+{
+  "name": "parking-master",
+  "version": "1.0.0",
+  "main": "electron-main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.leno-1.parking",
+    "productName": "停車大師",
+    "directories": {
+      "output": "dist"
+    },
+    "mac": {
+        "target": ["dmg", "zip"],
+        "icon": "icons/icon.icns"
+    },
+    "win": {
+        "target": "nsis",
+        "icon": "icons/icon.ico"
+    },
+    "linux": {
+        "target": ["AppImage"],
+        "icon": "icons/icon.png"
+    }
+  }
+}
