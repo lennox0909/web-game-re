@@ -13,20 +13,24 @@
   "build": {
     "appId": "com.leno-1.parking",
     "productName": "停車大師",
+    "asar": false,
+    "files": [
+      "**/*"
+    ],
     "directories": {
       "output": "dist"
     },
     "mac": {
-        "target": ["dmg", "zip"],
-        "icon": "icons/icon.icns"
+      "target": ["dmg", "zip"],
+      "icon": "icons/icon.icns"
     },
     "win": {
-        "target": "nsis",
-        "icon": "icons/icon.ico"
+      "target": "nsis",
+      "icon": "icons/icon.ico"
     },
     "linux": {
-        "target": ["AppImage"],
-        "icon": "icons/icon.png"
+      "target": ["AppImage"],
+      "icon": "icons/icon.png"
     }
   }
 }
