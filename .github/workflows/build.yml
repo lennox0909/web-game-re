@@ -3,10 +3,10 @@ name: Build and Release Electron App
 on:
   push:
     tags:
-      - 'v*' # 只有推送如 v1.0.0 的標籤時才會觸發打包與發布
+      - 'v*'
 
 permissions:
-  contents: write # 賦予 Actions 建立 Release 頁面的權限
+  contents: write
 
 jobs:
   build:
@@ -32,25 +32,13 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # ... 前面的 Checkout, Node.js 與 npm run build 步驟保持不變 ...
       - name: Release to GitHub
         uses: softprops/action-gh-release@v2
         with:
-        files: |
-           dist/*.exe
-           dist/*.dmg
-           dist/*.AppImage
-           dist/*.deb
+          files: |
+            dist/*.exe
+            dist/*.dmg
+            dist/*.AppImage
+            dist/*.deb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-      # - name: Upload Artifacts
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: app-build-${{ matrix.os }}
-      #     path: |
-      #       dist/*.exe
-      #       dist/*.dmg
-      #       dist/*.AppImage
-      #       dist/*.deb
